@@ -174,7 +174,7 @@ static struct {
 {	"<use id=\"scclef\" transform=\"translate(0,9.5) scale(0.037)\"\n"
 	"	xlink:href=\"#ucclef\"/>\n", D_ucclef},
 #define D_pclef 10
-{	"<path id=\"pclef\" d=\"m-2.7 9h5.4v-18h-5.4v18\" class=\"stroke\" stroke-width=\"1.4\"/>\n"},
+{	"<path id=\"pclef\" d=\"m-2.7 9h5.4v-18h-5.4v18\"stroke=\"black\" fill=\"none\" stroke-width=\"1.4\"/>\n"},
 #define D_hd 11
 {	"<ellipse id=\"hd\" rx=\"4.1\" ry=\"2.9\"\n"
 	"	transform=\"rotate(-20)\" class=\"fill\"/>\n"},
@@ -400,7 +400,7 @@ static struct {
 	"	<path class=\"fill\" d=\"M0.6 -2.7\n"
 	"		c-5.7 -3.1 -5.7 3.6 0 6.7c-3.9 -4 -4 -7.6 0 -5.8\n"
 	"		M1 -2.7c5.7 -3.1 5.7 3.6 0 6.7c3.9 -4 4 -7.6 0 -5.8\"/>\n"
-	"	<path d=\"M1.6 3.5v-13M0 3.5v-13\" class=\"stroke\" stroke-width=\".6\"/>\n"
+	"	<path d=\"M1.6 3.5v-13M0 3.5v-13\" stroke=\"black\" fill=\"none\" stroke-width=\".6\"/>\n"
 	"</g>\n"},
 #define D_pshhd 44
 {	"<g id=\"pshhd\">\n"
@@ -427,7 +427,7 @@ static struct {
 	"	<path d=\"m5 8v-16\" class=\"stroke\"/>\n"
 	"</g>\n", D_csig},
 #define D_pmsig 48
-{	"<path id=\"pmsig\" class=\"stroke\" stroke-width=\".8\"\n"
+{	"<path id=\"pmsig\" stroke=\"black\" fill=\"none\" stroke-width=\".8\"\n"
 	"	d=\"M0 -7a5 5 0 0 1 0 -10a5 5 0 0 1 0 10\"/>\n"},
 #define D_pMsig 49
 {	"<g id=\"pMsig\">\n"
@@ -435,7 +435,7 @@ static struct {
 	"	<path class=\"fill\" d=\"M0 -10a2 2 0 0 1 0 -4a2 2 0 0 1 0 4\"/>\n"
 	"</g>\n", D_pmsig},
 #define D_imsig 50
-{	"<path id=\"imsig\" class=\"stroke\" stroke-width=\".8\"\n"
+{	"<path id=\"imsig\" stroke=\"black\" fill=\"none\" stroke-width=\".8\"\n"
 	"	d=\"M3 -8a5 5 0 1 1 0 -8\"/>\n"},
 #define D_iMsig 51
 {	"<g id=\"iMsig\">\n"
@@ -466,10 +466,10 @@ static struct {
 {	"<g id=\"mrep2\" class=\"fill\">\n"
 	"	<path d=\"M-5.5 -7.5a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\n"
 	"		M5 4.5a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\"/>\n"
-	"	<path d=\"M-7 8l14 -10m-14 4l14 -10\" class=\"stroke\" stroke-width=\"1.8\"/>\n"
+	"	<path d=\"M-7 8l14 -10m-14 4l14 -10\" stroke=\"black\" fill=\"none\" stroke-width=\"1.8\"/>\n"
 	"</g>\n"},
 #define D_accent 60
-{	"<g id=\"accent\" class=\"stroke\" stroke-width=\"1.2\">\n"
+{	"<g id=\"accent\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\">\n"
 	"	<path d=\"m-4 0l8 -2l-8 -2\"/>\n"
 	"</g>\n"},
 #define D_umrd 61
@@ -481,7 +481,7 @@ static struct {
 #define D_lmrd 62
 {	"<g id=\"lmrd\">\n"
 	"	<use xlink:href=\"#umrd\"/>\n"
-	"	<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"-8\" class=\"stroke\" stroke-width=\".6\"/>\n"
+	"	<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"-8\" stroke=\"black\" fill=\"none\" stroke-width=\".6\"/>\n"
 	"</g>\n", D_umrd},
 #define D_grm 63
 {	"<path id=\"grm\" class=\"fill\" d=\"\n"
@@ -496,7 +496,7 @@ static struct {
 	"	c1.8 0.7 4.5 -0.2 7.2 -4.8\n"
 	"	-2.1 5 -5.4 6.8 -7.6 6\"/>\n"},
 #define D_emb 66
-{	"<path id=\"emb\" d=\"m-2.5 -3h5\" class=\"stroke\" stroke-width=\"1.2\" stroke-linecap=\"round\"/>\n"},
+{	"<path id=\"emb\" d=\"m-2.5 -3h5\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\" stroke-linecap=\"round\"/>\n"},
 #define D_hld 67
 {	"<g id=\"hld\" class=\"fill\">\n"
 	"	<circle cx=\"0\" cy=\"-3\" r=\"1.3\"/>\n"
@@ -541,16 +541,16 @@ static struct {
 	"	<circle cx=\"0\" cy=\"-12\" r=\"6\" stroke-width=\"1.7\"/>\n"
 	"</g>\n"},
 #define D_dplus 73
-{	"<path id=\"dplus\" class=\"stroke\" stroke-width=\"1.7\"\n"
+{	"<path id=\"dplus\" stroke=\"black\" fill=\"none\" stroke-width=\"1.7\"\n"
 	"	d=\"m0 -0.5v-6m-3 3h6\"/>\n"},
 #define D_lphr 74
-{	"<path id=\"lphr\" class=\"stroke\" stroke-width=\"1.2\"\n"
+{	"<path id=\"lphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
 	"	d=\"m0 0v18\"/>\n"},
 #define D_mphr 75
-{	"<path id=\"mphr\" class=\"stroke\" stroke-width=\"1.2\"\n"
+{	"<path id=\"mphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
 	"	d=\"m0 0v12\"/>\n"},
 #define D_sphr 76
-{	"<path id=\"sphr\" class=\"stroke\" stroke-width=\"1.2\"\n"
+{	"<path id=\"sphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
 	"	d=\"m0 0v6\"/>\n"},
 #define D_opend 77
 {	"<circle id=\"opend\" class=\"stroke\"\n"
@@ -1634,7 +1634,7 @@ static void gliss(int squiggle)
 			x1 += 6;
 		}
 	} else {
-		fprintf(fout, "<path class=\"stroke\" stroke-width=\"1\"\n"
+		fprintf(fout, "<path stroke=\"black\" fill=\"none\" stroke-width=\"1\"\n"
 			"	d=\"M8 0l%.2f 0\"/>\n", len);
 	}
 	fprintf(fout, "</g>\n");
@@ -1772,7 +1772,7 @@ back:
 	if (type == 'b') {
 		setg(1);
 		fprintf(fout,
-			"<rect class=\"stroke\" stroke-width=\"0.6\"\n"
+			"<rect stroke=\"black\" fill=\"none\" stroke-width=\"0.6\"\n"
 			"	x=\"%.2f\" y=\"%.2f\" width=\"%.2f\" height=\"%.2f\"/>\n",
 			gcur.xoffs + gcur.cx - 2, gcur.yoffs - y - gcur.font_s + 2,
 			w + 4, gcur.font_s + 1);
@@ -2001,7 +2001,7 @@ stack_dump();
 			y = gcur.yoffs - pop_free_val();
 			x = gcur.xoffs + pop_free_val();
 			h = pop_free_val();
-			fprintf(fout, "<path class=\"stroke\" stroke-width=\"1\"\n"
+			fprintf(fout, "<path stroke=\"black\" fill=\"none\" stroke-width=\"1\"\n"
 				"	d=\"M%.2f %.2fv%.2f\"/>\n",
 				x, y, -h);
 			return;
@@ -2080,7 +2080,7 @@ stack_dump();
 			y = gcur.yoffs - pop_free_val();
 			x = gcur.xoffs + pop_free_val();
 			fprintf(fout,
-				"<rect class=\"stroke\"\n"
+				"<rect stroke=\"black\" fill=\"none\"\n"
 				"	x=\"%.2f\" y=\"%.2f\" width=\"%.2f\" height=\"%.2f\"/>\n",
 				x, y - h, w, h);
 			return;
@@ -2091,7 +2091,7 @@ stack_dump();
 			y = gcur.yoffs - pop_free_val();
 			x = gcur.xoffs + pop_free_val();
 			fprintf(fout,
-				"<rect class=\"stroke\"\n"
+				"<rect stroke=\"black\" fill=\"none\"\n"
 				"	x=\"%.2f\" y=\"%.2f\" width=\"%.2f\" height=\"%.2f\"/>\n",
 				x, y - h, boxend - (x - gcur.xoffs) + 2, h);
 			return;
@@ -2412,7 +2412,7 @@ curveto:
 			a2 = pop_free_val();
 			a1 = pop_free_val();
 			fprintf(fout,
-				"<path class=\"stroke\" stroke-dasharray=\"5,5\"\n"
+				"<path stroke=\"black\" fill=\"none\" stroke-dasharray=\"5,5\"\n"
 				"	d=\"M%.2f %.2fc%.2f %.2f %.2f %.2f %.2f %.2f\"/>\n",
 					m1, m2, a1, -a2, a3, -a4, a5, -a6);
 			return;
@@ -2436,7 +2436,7 @@ curveto:
 			x = gcur.xoffs + pop_free_val();
 			h = pop_free_val();
 			fprintf(fout,
-				"<path class=\"stroke\" stroke-dasharray=\"5,5\"\n"
+				"<path stroke=\"black\" fill=\"none\" stroke-dasharray=\"5,5\"\n"
 				"	d=\"M%.2f %.2fv%.2f\"/>\n",
 				x, y, -h);
 			return;
@@ -2912,7 +2912,7 @@ curveto:
 			d = 25 + (int) w / 20 * 3;
 			n = (w - 15.) / d;
 			x += (w - d * n - 5) / 2;
-			fprintf(fout, "<path class=\"stroke\" stroke-width=\"1.2\"\n"
+			fprintf(fout, "<path stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
 				"	stroke-dasharray=\"5,%d\"\n"
 				"	d=\"M%.2f %.2fh%d\"/>\n",
 				d - 5,
@@ -3207,7 +3207,7 @@ moveto:
 			}
 			y -= 6;
 			fprintf(fout,
-				"<path class=\"stroke\" stroke-dasharray=\"6,6\""
+				"<path stroke=\"black\" fill=\"none\" stroke-dasharray=\"6,6\""
 				" d=\"M%.2f %.2fh%.2f\"/>\n",
 				x, y, w);
 			if (!((int) sym->e->u.v & 2))
@@ -3236,7 +3236,7 @@ moveto:
 				w -= 5;
 			}
 			fprintf(fout,
-				"<path class=\"stroke\" stroke-dasharray=\"6,6\""
+				"<path stroke=\"black\" fill=\"none\" stroke-dasharray=\"6,6\""
 				" d=\"M%.2f %.2fh%.2f\"/>\n",
 				x, y, w);
 			if (!((int) sym->e->u.v & 2))
@@ -4180,7 +4180,7 @@ translate:
 			x = gcur.xoffs + pop_free_val() + 1.5;
 			h = pop_free_val();
 			fprintf(fout,
-				"<path class=\"stroke\" stroke-width=\"3\"\n"
+				"<path stroke=\"black\" fill=\"none\" stroke-width=\"3\"\n"
 				"	d=\"M%.2f %.2fv%.2f\"/>\n",
 				x, y, -h);
 			return;
@@ -4299,7 +4299,7 @@ translate:
 			y = pop_free_val();
 			x = pop_free_val();
 			w = pop_free_val();
-			fprintf(fout, "<path class=\"stroke\" stroke-width=\"0.8\"\n"
+			fprintf(fout, "<path stroke=\"black\" fill=\"none\" stroke-width=\"0.8\"\n"
 				"	d=\"M%.2f %.2fh%.2f\"/>\n",
 				gcur.xoffs + x, gcur.yoffs - y, w);
 			return;
