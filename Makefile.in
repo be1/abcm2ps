@@ -22,14 +22,14 @@ datadir = $(DESTDIR)@datarootdir@
 docdir = $(DESTDIR)@docdir@
 mandir = $(DESTDIR)@mandir@
 
-build: libabcm2ps.a abcm2ps abcm2ps.1
+build: libabcm2ps-$(VERSION).a abcm2ps abcm2ps.1
 
 # unix
 OBJECTS=abcm2ps.o \
 	abcparse.o buffer.o deco.o draw.o format.o front.o glyph.o music.o parse.o \
 	subs.o svg.o syms.o
 
-libabcm2ps.a: $(OBJECTS)
+libabcm2ps-$(VERSION).a: $(OBJECTS)
 	ar r libabcm2ps-$(VERSION).a $(OBJECTS)
 
 abcm2ps: libabcm2ps-$(VERSION).a main.o

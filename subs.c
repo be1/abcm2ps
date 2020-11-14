@@ -64,14 +64,16 @@ static struct u_ps {
 } *user_ps;
 
 /* -- print message for internal error and maybe stop -- */
-void bug(char *msg, int fatal)
+int bug(char *msg, int fatal)
 {
 	error(1, NULL, "Internal error: %s.", msg);
 	if (fatal) {
 		fprintf(stderr, "Emergency stop.\n\n");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 	fprintf(stderr, "Trying to continue...\n");
+
+	return 0;
 }
 
 /* -- print an error message -- */

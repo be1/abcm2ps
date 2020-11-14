@@ -99,10 +99,10 @@ static unsigned char *latin_tb[5] = {
 };
 
 /* add text to the output buffer */
-static void txt_add(unsigned char *s, int sz)
+static int txt_add(unsigned char *s, int sz)
 {
 	if (skip)
-		return;
+		return 0;
 	if (offset + sz > size) {
 		size = (offset + sz + 8191) / 8192 * 8192;
 		if (!dst)
@@ -111,16 +111,18 @@ static void txt_add(unsigned char *s, int sz)
 			dst = realloc(dst, size);
 		if (!dst) {
 			fprintf(stderr, "Out of memory - abort\n");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 	}
 	memcpy(dst + offset, s, sz);
 	offset += sz;
+
+	return 0;
 }
 
 /* add text to the output buffer translating
  * the escape sequences and the non utf-8 characters */
-static void txt_add_cnv(unsigned char *s, int sz, int comment)
+static int txt_add_cnv(unsigned char *s, int sz, int comment)
 {
 	unsigned char *p, c, tmp[4];
 	int in_string = 0;
@@ -150,7 +152,8 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					+ ((p[2] - '0') << 3)
 					+ p[3] - '0';
 				if (p != s)
-					txt_add(s, (int) (p - s));
+					if (txt_add(s, (int) (p - s)))
+						return -1;
 				p += 4;
 				s = p;
 				sz -= 4;
@@ -160,21 +163,24 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					tmp[0] = 0xe2;
 					tmp[1] = 0x99;
 					tmp[2] = 0xaf;
-					txt_add(tmp, 3);
+					if (txt_add(tmp, 3))
+						return -1;
 					continue;
 				case 0x02:
 				case 0x82:
 					tmp[0] = 0xe2;
 					tmp[1] = 0x99;
 					tmp[2] = 0xad;
-					txt_add(tmp, 3);
+					if (txt_add(tmp, 3))
+						return -1;
 					continue;
 				case 0x03:
 				case 0x83:
 					tmp[0] = 0xe2;
 					tmp[1] = 0x99;
 					tmp[2] = 0xae;
-					txt_add(tmp, 3);
+					if (txt_add(tmp, 3))
+						return -1;
 					continue;
 				case 0x04:
 				case 0x84:
@@ -182,7 +188,8 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					tmp[1] = 0x9d;
 					tmp[2] = 0x84;
 					tmp[3] = 0xaa;
-					txt_add(tmp, 4);
+					if (txt_add(tmp, 4))
+						return -1;
 					continue;
 				case 0x05:
 				case 0x85:
@@ -190,13 +197,15 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					tmp[1] = 0x9d;
 					tmp[2] = 0x84;
 					tmp[3] = 0xab;
-					txt_add(tmp, 4);
+					if (txt_add(tmp, 4))
+						return -1;
 					continue;
 				}
 				if (c >= 0x80 && latin > 0)
 					goto latin;
 				tmp[0] = c;
-				txt_add(tmp, 1);
+				if (txt_add(tmp, 1))
+					return -1;
 				continue;
 			}
 			if (sz >= 6		/* \uxxxx */
@@ -219,7 +228,8 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 						v += c - 'a' + 10;
 				}
 				if (p != s)
-					txt_add(s, (int) (p - s));
+					if (txt_add(s, (int) (p - s)))
+						return -1;
 				p += 6;
 				sz -= 6;
 				if ((v & 0xdc00) == 0xd800	/* surrogates */
@@ -270,7 +280,8 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					tmp[3] = 0x80 | (v & 0x3f);
 					i = 4;
 				}
-				txt_add(tmp, i);
+				if (txt_add(tmp, i))
+					return -1;
 				continue;
 			}
 			if (sz >= 3) {
@@ -302,8 +313,10 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					} while (*q != '\0');
 					if (*q != '\0') {
 						if (p != s)
-							txt_add(s, (int) (p - s));
-						txt_add(q + 2, 2);
+							if (txt_add(s, (int) (p - s)))
+								return -1;
+						if (txt_add(q + 2, 2))
+							return -1;
 						p += 3;
 						sz -= 3;
 						s = p;
@@ -320,8 +333,10 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 					} while (*q != '\0');
 					if (*q != '\0') {
 						if (p != s)
-							txt_add(s, (int) (p - s));
-						txt_add(q + 1, 2);
+							if (txt_add(s, (int) (p - s)))
+								return -1;
+						if (txt_add(q + 1, 2))
+							return -1;
 						p += 3;
 						sz -= 3;
 						s = p;
@@ -339,7 +354,8 @@ static void txt_add_cnv(unsigned char *s, int sz, int comment)
 		}
 		if (*p >= 0x80 && latin > 0) {
 			if (p != s)
-				txt_add(s, (int) (p - s));
+				if (txt_add(s, (int) (p - s)))
+					return -1;
 			c = *p++;
 			s = p;
 			sz--;
@@ -347,12 +363,14 @@ latin:
 			if (c < 0xa0 || latin == 1) {
 				tmp[0] = 0xc0 | ((c >> 6) & 0x03);
 				tmp[1] = 0x80 | (c & 0x3f);
-				txt_add(tmp, 2);
+				if (txt_add(tmp, 2))
+					return -1;
 			} else {
 				unsigned char *q;
 
 				q = latin_tb[latin - 2];
-				txt_add(q + (c - 0xa0) * 2, 2);
+				if (txt_add(q + (c - 0xa0) * 2, 2))
+					return -1;
 			}
 			continue;
 		}
@@ -361,10 +379,13 @@ latin:
 	}
 done:
 	if (p != s)
-		txt_add(s, (int) (p - s));
+		if (txt_add(s, (int) (p - s)))
+			return -1;
+
+	return 0;
 }
 
-static void txt_add_eos(char *fname, int linenum)
+static int txt_add_eos(char *fname, int linenum)
 {
 	static unsigned char eos = '\0';
 
@@ -373,11 +394,14 @@ static void txt_add_eos(char *fname, int linenum)
 	 && offset > 0
 	 && dst[offset - 1] == '\\') {
 		offset--;
-		return;
+		return 0;
 	}
-	txt_add(&eos, 1);
+	if (txt_add(&eos, 1))
+		return -1;
 	abc_parse((char *) dst, fname, linenum);
 	offset = 0;
+
+	return 0;
 }
 
 /* get the ABC version */

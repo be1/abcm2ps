@@ -265,7 +265,7 @@ void include_file(unsigned char *fn)
 
 /* -- treat an ABC input file and generate the music -- */
 /* this function also treats ABC in XHTML */
-static void treat_abc_file(char *fn)
+static int treat_abc_file(char *fn)
 {
 	FILE *fin;
 	char *file, *file_tmp;
@@ -281,12 +281,12 @@ static void treat_abc_file(char *fn)
 
 	if (epsf != 3) {
 		treat_file(fn, "abc");		/* not '-z' */
-		return;
+		return 0;
 	}
 
 	if (*fn == '\0') {
 		error(1, NULL, "cannot use stdin with -z - aborting");
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 
 	fin = open_file(fn, "abc", tex_buf);
@@ -387,10 +387,10 @@ static void treat_abc_file(char *fn)
 #else
 	free(file);
 #endif
-	return;
+	return 0;
 err:
 	error(1, NULL, "input file %s error %s - aborting", fn, strerror(errno));
-	exit(EXIT_FAILURE);
+	return(EXIT_FAILURE);
 }
 
 /* -- read the default format -- */
@@ -443,7 +443,7 @@ static void display_version(int full)
 }
 
 /* -- display usage and exit -- */
-static void usage(void)
+static int usage(void)
 {
 	display_version(0);
 	printf(	"ABC to Postscript/SVG translator.\n"
@@ -496,7 +496,7 @@ static void usage(void)
 		"     -H      show the format parameters\n"
 		"     -S      secure mode\n"
 		"     -q      quiet mode\n");
-	exit(EXIT_SUCCESS);
+	return(EXIT_SUCCESS);
 }
 
 #ifdef linux
@@ -581,7 +581,7 @@ int abcm2ps(int argc, char **argv)
 	char *p, c, *aaa;
 
 	if (argc <= 1)
-		usage();
+		return usage();
 
 	outfn[0] = '\0';
 	init_outbuf(64);
@@ -612,7 +612,7 @@ int abcm2ps(int argc, char **argv)
 				quiet = 1;	// don't output the version
 				break;
 			case 'h':
-				usage();	/* no return */
+				return usage();	/* no return, must exit() */
 			case 'p':
 				pipeformat = 1;	/* format for bagpipe regardless of key */
 				break;
@@ -720,7 +720,8 @@ int abcm2ps(int argc, char **argv)
 
 			if (p[1] == '\0') {		/* '-' alone */
 				if (in_fname) {
-					treat_abc_file(in_fname);
+					int ret = treat_abc_file(in_fname);
+					if (ret) return ret; /* must exit() */
 					frontend((unsigned char *) "select\n", FE_FMT,
 							"cmd_line", 0);
 				}
@@ -1000,7 +1001,7 @@ int abcm2ps(int argc, char **argv)
 					case 'O':
 						if (strlen(aaa) >= sizeof outfn) {
 							error(1, NULL, "'-O' too large - aborting");
-							exit(EXIT_FAILURE);
+							return(EXIT_FAILURE);
 						}
 						strcpy(outfn, aaa);
 						break;
@@ -1030,15 +1031,20 @@ int abcm2ps(int argc, char **argv)
 		}
 
 		if (in_fname) {
-			treat_abc_file(in_fname);
+			int ret;
+			ret = treat_abc_file(in_fname);
+			if (ret) return ret; /* must exit() */
 			frontend((unsigned char *) "select\n", FE_FMT,
 						"cmd_line", 0);
 		}
 		in_fname = p;
 	}
 
-	if (in_fname)
-		treat_abc_file(in_fname);
+	if (in_fname) {
+		int ret;
+		ret = treat_abc_file(in_fname);
+		if (ret) return ret; /* must exit() */
+	}
 	if (multicol_start != 0) {		/* lack of %%multicol end */
 		error(1, NULL, "Lack of %%%%multicol end");
 		multicol_start = 0;
@@ -1093,7 +1099,7 @@ void *getarena(int len)
 			error(1, NULL,
 				"getarena - data too wide %d - aborting",
 				len);
-			exit(EXIT_FAILURE);
+			return NULL;
 		}
 		if (len > AREANASZ) {			/* big allocation */
 			struct str_a *a_n;
@@ -1115,4 +1121,9 @@ void *getarena(int len)
 	a_p->p += len;
 	a_p->r -= len;
 	return p;
+}
+
+void freearena(void *arena)
+{
+	free(arena); /* FIXME: must be buggy */
 }

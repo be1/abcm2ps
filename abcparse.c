@@ -133,9 +133,15 @@ static struct SYMBOL *abc_new(int type, char *text)
 	struct SYMBOL *s;
 
 	s = getarena(sizeof(struct SYMBOL));
+	if (!s)
+		return NULL;
 	memset(s, 0, sizeof(struct SYMBOL));
 	if (text) {
 		s->text = getarena(strlen(text) + 1);
+		if (!s->text) {
+			freearena(s);
+			return NULL;
+		}
 		strcpy(s->text, text);
 	}
 	if (!parse.last_sym) {
@@ -322,6 +328,9 @@ static char *parse_extra(char *p,
 					p++;
 				l = p - q;
 				*p_stlines = getarena(l + 1);
+				if (!*p_stlines) {
+					return NULL;
+				}
 				strncpy(*p_stlines, q, l);
 				(*p_stlines)[l] = '\0';
 			}
@@ -396,6 +405,8 @@ static char *get_deco(char *p,
 //		if (parse.abc_state != ABC_S_GLOBAL)
 //			lvlarena(0);
 		*t = getarena(l + 1);
+		if (!*t)
+			return NULL;
 //		if (parse.abc_state != ABC_S_GLOBAL)
 //			lvlarena(1);
 		memcpy(*t, q, l);
@@ -439,7 +450,7 @@ static char *parse_acc(char *p,
 }
 
 /* -- parse a clef (K: or V:) -- */
-static void parse_clef(struct SYMBOL *s,
+static int parse_clef(struct SYMBOL *s,
 			char *name,
 			char *middle)
 {
@@ -456,6 +467,8 @@ static void parse_clef(struct SYMBOL *s,
 		case '\"':
 			name = get_str(str, name, sizeof str);
 			s->u.clef.name = getarena(strlen(str) + 1);
+			if (!s->u.clef.name)
+				return -1;
 			strcpy(s->u.clef.name, str);
 			clef = TREBLE;
 			break;
@@ -604,6 +617,8 @@ static void parse_clef(struct SYMBOL *s,
 		syntax("Warning: Deprecated or non-standard item", warn);
 		severity = sev_sav;
 	}
+
+	return 0;
 }
 
 /* get the octave= value */
@@ -625,7 +640,7 @@ static int parse_octave(char *p)
 }
 
 /* -- parse a 'K:' -- */
-static void parse_key(char *p,
+static int parse_key(char *p,
 		      struct SYMBOL *s)
 {
 	int sf, empty, instr;
@@ -639,7 +654,7 @@ static void parse_key(char *p,
 
 	if (*p == '\0') {
 		s->u.key.empty = 1;
-		return;
+		return 0;
 	}
 	sf = 0;
 //	mode = 0;
@@ -677,7 +692,7 @@ static void parse_key(char *p,
 				p++;
 			if (*p == '\0') {
 				s->u.key.empty = empty;
-				return;
+				return 0;
 			}
 			break;
 		}
@@ -832,66 +847,77 @@ unk:
 	}
 	if (clef_name || clef_middle) {
 		s = abc_new(ABC_T_CLEF, NULL);
-		parse_clef(s, clef_name, clef_middle);
+		if (parse_clef(s, clef_name, clef_middle))
+			return -1;
 	}
 	if (p_map) {
 		strcpy(tex_buf, "%%voicemap ");
 		get_str(&tex_buf[11], p_map, TEX_BUF_SZ - 12);
 		abc_new(ABC_T_PSCOM, tex_buf);
 	}
+
+	return 0;
 }
 
 /* -- set default length from 'L:' -- */
-static char *get_len(char *p,
-		     struct SYMBOL *s)
+static int get_len(char *p,
+		     struct SYMBOL *s,
+			 char* out_error_txt)
 {
 	int l1, l2, d;
-	char *error_txt = NULL;
 
 	if (strcmp(p, "auto") == 0) {		/* L:auto */
 		ulen = 15120;			// 2*2*2*2*3*3*3*5*7
 		s->u.length.base_length = -1;
-		return error_txt;
+		return 0;
 	}
 	l1 = 0;
 	l2 = 1;
 	if (sscanf(p, "%d /%d ", &l1, &l2) != 2
 	 || l1 == 0) {
 		s->u.length.base_length = ulen ? ulen : BASE_LEN / 8;
-		return "Bad unit note length: unchanged";
+		if (out_error_txt)
+			strncpy(out_error_txt, "Bad unit note length: unchanged", ARRAY_LEN);
 	}
 
 	if (l2 == 0) {
-		error_txt = "Bad length divisor, set to 4";
+		if (out_error_txt)
+			strncpy(out_error_txt, "Bad length divisor, set to 4", ARRAY_LEN);
 		l2 = 4;
 	}
 	d = BASE_LEN / l2;
 	if (d * l2 != BASE_LEN) {
-		error_txt = "Length incompatible with BASE, using 1/8";
+		if (out_error_txt)
+			strncpy(out_error_txt, "Length incompatible with BASE, using 1/8", ARRAY_LEN);
 		d = BASE_LEN / 8;
 	} else 	{
 		d *= l1;
 		if (l1 != 1
 		 || (l2 & (l2 - 1))) {
-			error_txt = "Incorrect unit note length, using 1/8";
+			if (out_error_txt)
+				strncpy(out_error_txt, "Incorrect unit note length, using 1/8", ARRAY_LEN);
 			d = BASE_LEN / 8;
 		}
 	}
 	s->u.length.base_length = d;
-	return error_txt;
+	return 0;
 }
 
 /* -- parse a 'M:' -- */
-static char *parse_meter(char *p,
-				struct SYMBOL *s)
+static int parse_meter(char *p,
+				struct SYMBOL *s,
+				char *out_error_txt)
 {
 	int m1, m2, d, wmeasure, nm, in_parenth;
 	unsigned i;
 	char *q;
 static char top_err[] = "Cannot identify meter top";
 
-	if (*p == '\0')
-		return "Empty meter string";
+	if (*p == '\0') {
+		if (out_error_txt)
+			strncpy(out_error_txt, "Empty meter string", ARRAY_LEN);
+		return -1;
+	}
 	nm = 0;
 	in_parenth = 0;
 	m1 = 0;
@@ -903,8 +929,11 @@ static char top_err[] = "Cannot identify meter top";
 	    while (*p != '\0') {
 		if (*p == '=')
 			break;
-		if (nm >= MAX_MEASURE)
-			return "Too many values in M:";
+		if (nm >= MAX_MEASURE) {
+			if (out_error_txt)
+				strncpy(out_error_txt, "Too many values in M:", ARRAY_LEN);
+			return -1;
+		}
 		switch (*p) {
 		case 'C':
 			s->u.meter.meter[nm].top[0] = *p++;
@@ -946,8 +975,11 @@ static char top_err[] = "Cannot identify meter top";
 			continue;
 		default:
 			if (sscanf(p, "%d", &m1) != 1
-			 || m1 <= 0)
-				return top_err;
+			 || m1 <= 0) {
+				if (out_error_txt)
+					strncpy(out_error_txt, top_err, ARRAY_LEN);
+				return -1;
+			}
 			i = 0;
 			m2 = 2;			/* default when no bottom value */
 			for (;;) {
@@ -962,8 +994,11 @@ static char top_err[] = "Cannot identify meter top";
 				if (*p == '/') {
 					p++;
 					if (sscanf(p, "%d", &m2) != 1
-					 || m2 <= 0)
-						return "Cannot identify meter bottom";
+					 || m2 <= 0) {
+						if (out_error_txt)
+							strncpy(out_error_txt, "Cannot identify meter bottom", ARRAY_LEN);
+						return -1;
+					}
 					i = 0;
 					while (isdigit((unsigned char) *p)
 					    && i < sizeof s->u.meter.meter[0].bot)
@@ -977,8 +1012,11 @@ static char top_err[] = "Cannot identify meter top";
 				if (i < sizeof s->u.meter.meter[0].top)
 					s->u.meter.meter[nm].top[i++] = *p++;
 				if (sscanf(p, "%d", &d) != 1
-				 || d <= 0)
-					return top_err;
+				 || d <= 0) {
+					if (out_error_txt)
+						strncpy(out_error_txt, top_err, ARRAY_LEN);
+					return -1;
+				}
 				if (p[-1] == ' ') {
 					if (d > m1)
 						m1 = d;
@@ -1001,8 +1039,11 @@ static char top_err[] = "Cannot identify meter top";
 	if (*p == '=') {
 		if (sscanf(++p, "%d/%d", &m1, &m2) != 2
 		 || m1 <= 0
-		 || m2 <= 0)
-			return "Cannot identify meter explicit duration";
+		 || m2 <= 0) {
+			if (out_error_txt)
+				strncpy(out_error_txt, "Cannot identify meter explicit duration", ARRAY_LEN);
+			return -1;
+		}
 		wmeasure = m1 * BASE_LEN / m2;
 		s->u.meter.expdur = 1;
 	}
@@ -1062,8 +1103,9 @@ char *get_str(char *d,		/* destination */
 }
 
 /* -- parse a tempo (Q:) -- */
-static char *parse_tempo(char *p,
-			 struct SYMBOL *s)
+static int parse_tempo(char *p,
+			 struct SYMBOL *s,
+			 char *out_error_txt)
 {
 	char c, str[80];
 	int i, l, n, top, bot;
@@ -1152,12 +1194,15 @@ static char *parse_tempo(char *p,
 
 	return 0;
 inval:
-	return "Invalid tempo";
+	if (out_error_txt)
+		strncpy(out_error_txt, "Invalid tempo", ARRAY_LEN);
+	return -1;
 }
 
 /* -- get a user defined symbol (U:) -- */
-static char *get_user(char *p,
-		      struct SYMBOL *s)
+static int get_user(char *p,
+		      struct SYMBOL *s,
+			  char *out_error_txt)
 {
 	unsigned char c;
 	char *value;
@@ -1176,7 +1221,9 @@ static char *get_user(char *p,
 	}
 	switch (char_tb[c]) {
 	default:
-		return "Bad decoration character";
+		if (out_error_txt)
+			strncpy(out_error_txt, "Bad decoration character", ARRAY_LEN);
+		return -1;
 	case CHAR_DECO:
 		break;
 	case CHAR_BAD:
@@ -1215,11 +1262,12 @@ static char *get_user(char *p,
 }
 
 /* -- parse the voice parameters (V:) -- */
-static char *parse_voice(char *p,
-			 struct SYMBOL *s)
+/* note: error_txt must be an array, not a malloc'ed pointer */
+static int parse_voice(char *p,
+			 struct SYMBOL *s,
+			 char* out_error_txt)
 {
 	int voice;
-	char *error_txt = NULL;
 	char *clef_name, *clef_middle, *clef_stlines, *clef_scale;
 	char *p_octave, *p_cue, *p_map;
 	signed char *p_stem;
@@ -1362,8 +1410,10 @@ static struct kw_s {
 			sc = atof(p);
 			if (sc >= 0.5 && sc <= 2)
 				s->u.voice.scale = sc;
-			else
-				error_txt = "Bad value for voice scale";
+			else {
+				if (out_error_txt)
+					strncpy(out_error_txt, "Bad value for voice scale", ARRAY_LEN);
+			}
 			while (!isspace((unsigned char) *p) && *p != '\0')
 				p++;
 			break;
@@ -1396,14 +1446,15 @@ static struct kw_s {
 	}
 	if (clef_name || clef_middle) {
 		s = abc_new(ABC_T_CLEF, NULL);
-		parse_clef(s, clef_name, clef_middle);
+		if (parse_clef(s, clef_name, clef_middle))
+		return -1;
 	}
 	if (p_map) {
 		strcpy(tex_buf, "%%voicemap ");
 		get_str(&tex_buf[11], p_map, TEX_BUF_SZ - 12);
 		abc_new(ABC_T_PSCOM, tex_buf);
 	}
-	return error_txt;
+	return 0;
 }
 
 /* -- parse a bar -- */
@@ -1659,7 +1710,7 @@ static char *parse_deco(char *p,
 }
 
 /* -- parse a decoration line (d: or s:) -- */
-static char *parse_decoline(char *p)
+static int parse_decoline(char *p, char *out_error_txt)
 {
 	struct SYMBOL *is;
 	unsigned char t;
@@ -1683,7 +1734,7 @@ static char *parse_decoline(char *p)
 				is = is->abc_next;
 			if (!is) {
 				syntax("Not enough bar lines for deco line", p);
-				return NULL;
+				return 0;
 			}
 			is = is->abc_next;
 			p++;
@@ -1693,17 +1744,20 @@ static char *parse_decoline(char *p)
 				is = is->abc_next;
 			if (!is) {
 				syntax("Not enough notes for deco line", p);
-				return NULL;
+				return 0;
 			}
 			is = is->abc_next;
 			p++;
 			continue;
 		case '\\':
 			if (p[1] == '\0') {
-				if (!is)
-					return "Not enough notes for deco line";
+				if (!is) {
+					if (out_error_txt)
+						strncpy(out_error_txt, "Not enough notes for deco line", ARRAY_LEN);
+					return -1;
+				}
 				deco_cont = is;
-				return NULL;
+				return 0;
 			}
 			syntax("'\\' ignored", p);
 			p++;
@@ -1723,8 +1777,11 @@ static char *parse_decoline(char *p)
 		while (is && (is->abc_type != ABC_T_NOTE
 				|| (is->flags & ABC_F_GRACE)))
 			is = is->abc_next;
-		if (!is)
-			return "Not enough notes for deco line";
+		if (!is) {
+			if (out_error_txt)
+				strncpy(out_error_txt, "Not enough notes for deco line", ARRAY_LEN);
+			return -1;
+		}
 
 		if (gchord) {
 			if (is->text) {
@@ -1751,7 +1808,7 @@ static char *parse_decoline(char *p)
 		}
 		is = is->abc_next;
 	}
-	return NULL;
+	return 0;
 }
 
 /* -- parse a guitar chord / annotation -- */
@@ -1939,7 +1996,7 @@ static int parse_line(char *p)
 				p += 5;
 				while (isspace((unsigned char) *p))
 					p++;
-				get_user(p, s);
+				get_user(p, s, NULL);
 				return 0;
 			}
 			return 0;
@@ -2529,8 +2586,10 @@ static int parse_info(char *p)
 {
 	struct SYMBOL *s;
 	char info_type = *p;
-	char *error_txt = NULL;
+	char error_txt[ARRAY_LEN];
+	int ret;
 
+	memset(error_txt, 0, ARRAY_LEN);
 	s = abc_new(ABC_T_INFO, p);
 
 	p += 2;
@@ -2541,15 +2600,18 @@ static int parse_info(char *p)
 		if (parse.abc_state == ABC_S_GLOBAL)
 			break;
 		if (!deco_start) {
-			error_txt = "Erroneous 'd:'/'s:'";
+			strncpy(error_txt, "Erroneous 'd:'/'s:'", ARRAY_LEN);
 			break;
 		}
-		error_txt = parse_decoline(p);
+		ret = parse_decoline(p, error_txt);
+		if (ret < 0)
+			return ret;
 		break;
 	case 'K':
 		if (parse.abc_state == ABC_S_GLOBAL)
 			break;
-		parse_key(p, s);
+		if (parse_key(p, s))
+			return -1;
 		if (parse.abc_state == ABC_S_HEAD) {
 			int i;
 
@@ -2562,23 +2624,27 @@ static int parse_info(char *p)
 		}
 		break;
 	case 'L':
-		error_txt = get_len(p, s);
+		ret = get_len(p, s, error_txt);
+		if (ret < 0)
+			return ret;
 		if (s->u.length.base_length > 0)
 			ulen = s->u.length.base_length;
 		break;
 	case 'M':
-		error_txt = parse_meter(p, s);
+		parse_meter(p, s, error_txt);
 		break;
 	case 'Q':
-		error_txt = parse_tempo(p, s);
+		parse_tempo(p, s, error_txt);
 		break;
 	case 'U':
-		error_txt = get_user(p, s);
+		get_user(p, s, error_txt);
 		break;
 	case 'V':
 		if (parse.abc_state == ABC_S_GLOBAL)
 			break;
-		error_txt = parse_voice(p, s);
+		ret = parse_voice(p, s, error_txt);
+		if (ret < 0)
+			return ret;
 		break;
 	case 'X':
 		memset(voice_tb, 0, sizeof voice_tb);
@@ -2588,7 +2654,7 @@ static int parse_info(char *p)
 		lvlarena(1);
 		return 2;
 	}
-	if (error_txt)
+	if (error_txt[0])
 		syntax(error_txt, p);
 	return 0;
 }

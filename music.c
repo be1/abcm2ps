@@ -5055,7 +5055,7 @@ static float delayed_output(float indent)
 	tmpbuf = malloc(outbufsz);
 	if (!tmpbuf) {
 		error(1, NULL, "Out of memory for delayed outbuf - abort");
-		exit(EXIT_FAILURE);
+		return -1; /* FIXME: sure ? */
 	}
 	mbf = outbuf = tmpbuf;
 	*outbuf = '\0';

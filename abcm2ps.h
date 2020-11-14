@@ -5,6 +5,8 @@
 
 #include "config.h"
 
+#define ARRAY_LEN 128
+
 #define MAXVOICE 32	/* max number of voices */
 
 #define MAXHD	8	/* max heads in a chord */
@@ -739,6 +741,7 @@ void include_file(unsigned char *fn);
 void clrarena(int level);
 int lvlarena(int level);
 void *getarena(int len);
+void freearena(void* arena);
 void strext(char *fid, char *ext);
 int abcm2ps(int argc, char **argv);
 /* abcparse.c */
@@ -751,7 +754,7 @@ char *parse_acc_pit(char *p,
 		int *pit,
 		int *acc);
 /* buffer.c */
-void a2b(char *fmt, ...)
+int a2b(char *fmt, ...)
 #ifdef __GNUC__
 	__attribute__ ((format (printf, 1, 2)))
 #endif
@@ -759,20 +762,20 @@ void a2b(char *fmt, ...)
 void block_put(void);
 void buffer_eob(int eot);
 void marg_init(void);
-void bskip(float h);
+int bskip(float h);
 void check_buffer(void);
-void init_outbuf(int kbsz);
+int init_outbuf(int kbsz);
 void close_output_file(void);
 void close_page(void);
 float get_bposy(void);
-void open_fout(void);
+int open_fout(void);
 void write_buffer(void);
 extern int (*output)(FILE *out, const char *fmt, ...)
 #ifdef __GNUC__
 	__attribute__ ((format (printf, 2, 3)))
 #endif
 	;
-void write_eps(void);
+int write_eps(void);
 /* deco.c */
 void deco_add(char *text);
 void deco_cnv(struct decos *dc, struct SYMBOL *s, struct SYMBOL *prev);
@@ -857,7 +860,7 @@ void sort_pitch(struct SYMBOL *s);
 struct SYMBOL *sym_add(struct VOICE_S *p_voice,
 			int type);
 /* subs.c */
-void bug(char *msg, int fatal);
+int bug(char *msg, int fatal);
 void error(int sev, struct SYMBOL *s, char *fmt, ...);
 float scan_u(char *str, int type);
 float cwid(unsigned char c);

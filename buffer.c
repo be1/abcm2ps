@@ -64,7 +64,7 @@ static void cutext(char *fid)
 }
 
 /* -- open the output file -- */
-void open_fout(void)
+int open_fout(void)
 {
 	int i;
 	char fnm[FILENAME_MAX];
@@ -100,7 +100,7 @@ void open_fout(void)
 			nepsf = 0;
 		sprintf(&fnm[i + 1], "%03d.svg", ++nepsf);
 	} else if (strcmp(fnm, outfnam) == 0) {
-		return;				/* same output file */
+		return 0;				/* same output file */
 	}
 
 	close_output_file();
@@ -108,11 +108,13 @@ void open_fout(void)
 	if (i != 0 || fnm[0] != '-') {
 		if ((fout = fopen(fnm, "w")) == NULL) {
 			error(1, NULL, "Cannot create output file %s - abort", fnm);
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 	} else {
 		fout = stdout;
 	}
+
+	return 0;
 }
 
 /* -- convert a date -- */
@@ -134,7 +136,7 @@ void marg_init(void)
 }
 
 /* -- initialize the postscript file (PS or EPS) -- */
-static void init_ps(char *str)
+static int init_ps(char *str)
 {
 	time_t ltime;
 	unsigned i;
@@ -150,7 +152,8 @@ static void init_ps(char *str)
 		marg_init();
 	} else {
 		if (!fout)
-			open_fout();
+			if (open_fout())
+				return -1;
 		fprintf(fout, "%%!PS-Adobe-2.0\n");
 		fprintf(fout, "%%%%BoundingBox: 0 0 %.0f %.0f\n",
 			p_fmt->pagewidth * PPI_96_72,
@@ -228,6 +231,8 @@ static void init_ps(char *str)
 	}
 	fprintf(fout, "%%%%EndSetup\n");
 	file_initialized = 1;
+
+	return 0;
 }
 
 /* -- initialize the svg file (option '-g') -- */
@@ -671,14 +676,14 @@ static void epsf_title(char *p, int sz)
 }
 
 /* -- output a EPS (-E) or SVG (-g) file -- */
-void write_eps(void)
+int write_eps(void)
 {
 	unsigned i;
 	char *p, title[80];
 
 	if (mbf == outbuf
 	 || !info['X' - 'A'])
-		return;
+		return 0;
 
 	p_fmt = &cfmt;				/* tune format */
 
@@ -691,7 +696,7 @@ void write_eps(void)
 		if (i == 0 && outfnam[0] == '-') {
 			if (epsf == 1) {
 				error(1, NULL, "Cannot use stdout with '-E' - abort");
-				exit(EXIT_FAILURE);
+				return -1;
 			}
 			fout = stdout;
 		} else {
@@ -711,7 +716,7 @@ void write_eps(void)
 			if ((fout = fopen(outfnam, "w")) == NULL) {
 				error(1, NULL, "Cannot open output file %s - abort",
 						outfnam);
-				exit(EXIT_FAILURE);
+				return -1;
 			}
 		}
 	}
@@ -734,12 +739,14 @@ void write_eps(void)
 		file_initialized = 0;
 	cur_lmarg = 0;
 	cur_scale = 1.0;
+
+	return 0;
 }
 
 /*  subroutines to handle output buffer  */
 
 /* -- update the output buffer pointer -- */
-void a2b(char *fmt, ...)
+int a2b(char *fmt, ...)
 {
 	va_list args;
 
@@ -747,7 +754,7 @@ void a2b(char *fmt, ...)
 		if (epsf) {
 			error(1, NULL, "Output buffer overflow - increase outbufsz");
 			fprintf(stderr, "*** abort\n");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 		error(0, NULL, "Possible buffer overflow");
 		write_buffer();
@@ -756,19 +763,21 @@ void a2b(char *fmt, ...)
 	va_start(args, fmt);
 	mbf += vsnprintf(mbf, outbuf + outbufsz - mbf, fmt, args);
 	va_end(args);
+
+	return 0;
 }
 
 /* -- translate down by 'h' scaled points in output buffer -- */
-void bskip(float h)
+int bskip(float h)
 {
 	if (h == 0)
-		return;
+		return 0;
 	bposy -= h * cfmt.scale;
-	a2b("0 %.2f T\n", -h);
+	return a2b("0 %.2f T\n", -h);
 }
 
 /* -- initialize the output buffer -- */
-void init_outbuf(int kbsz)
+int init_outbuf(int kbsz)
 {
 	if (outbuf)
 		free(outbuf);
@@ -778,11 +787,13 @@ void init_outbuf(int kbsz)
 	outbuf = malloc(outbufsz);
 	if (!outbuf) {
 		error(1, NULL, "Out of memory for outbuf - abort");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 	bposy = 0;
 	ln_num = 0;
 	mbf = outbuf;
+
+	return 0;
 }
 
 /* -- write buffer contents, break at full pages -- */

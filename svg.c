@@ -1419,7 +1419,7 @@ static void setg(int newg)
 }
 
 /* graphic path */
-static void path_print(char *fmt, ...)
+static int path_print(char *fmt, ...)
 {
 	va_list args;
 	char *p;
@@ -1436,9 +1436,11 @@ static void path_print(char *fmt, ...)
 	}
 	if (!path) {
 		fprintf(stderr, "Out of memory.\n");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 	strcpy(p, path_buf);
+
+	return 0;
 }
 
 static void path_def(void)
