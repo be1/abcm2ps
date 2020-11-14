@@ -740,6 +740,7 @@ void clrarena(int level);
 int lvlarena(int level);
 void *getarena(int len);
 void strext(char *fid, char *ext);
+int abcm2ps(int argc, char **argv);
 /* abcparse.c */
 void abc_parse(char *p, char *fname, int linenum);
 void abc_eof(void);

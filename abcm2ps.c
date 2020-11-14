@@ -575,7 +575,7 @@ static void set_opt(char *w, char *v)
 }
 
 /* -- main program -- */
-int main(int argc, char **argv)
+int abcm2ps(int argc, char **argv)
 {
 	unsigned j;
 	char *p, c, *aaa;

@@ -9,6 +9,7 @@ CPPFLAGS = @CPPFLAGS@
 CFLAGS = @CFLAGS@
 LDFLAGS = @LDFLAGS@
 LDLIBS = @LDLIBS@
+VERSION = @VERSION@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -21,13 +22,17 @@ datadir = $(DESTDIR)@datarootdir@
 docdir = $(DESTDIR)@docdir@
 mandir = $(DESTDIR)@mandir@
 
-build: abcm2ps abcm2ps.1
+build: libabcm2ps.a abcm2ps abcm2ps.1
 
 # unix
 OBJECTS=abcm2ps.o \
 	abcparse.o buffer.o deco.o draw.o format.o front.o glyph.o music.o parse.o \
 	subs.o svg.o syms.o
-abcm2ps: $(OBJECTS)
+
+libabcm2ps.a: $(OBJECTS)
+	ar r libabcm2ps-$(VERSION).a $(OBJECTS)
+
+abcm2ps: libabcm2ps-$(VERSION).a main.o
 
 $(OBJECTS): abcm2ps.h config.h Makefile
 
@@ -77,6 +82,6 @@ test:	$(EXAMPLES)
 mostlyclean:
 	rm -f *.o $(EXAMPLES)
 clean: mostlyclean
-	rm -f abcm2ps abcm2ps.1
+	rm -f libabcm2ps-$(VERSION).a abcm2ps abcm2ps.1
 distclean: clean
 	rm -f config.h Makefile
