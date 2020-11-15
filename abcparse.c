@@ -139,7 +139,7 @@ static struct SYMBOL *abc_new(int type, char *text)
 	if (text) {
 		s->text = getarena(strlen(text) + 1);
 		if (!s->text) {
-			freearena(s);
+			//freearena(s);
 			return NULL;
 		}
 		strcpy(s->text, text);
