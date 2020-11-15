@@ -2,7 +2,8 @@ include(../common.pri)
 TEMPLATE = app
 TARGET = abcm2ps
 CONFIG += link_pkgconfig
-PKGCONFIG += pangocairo
+QMAKE_CFLAGS += -DHAVE_PANGO=1
+PKGCONFIG += pangocairo pangoft2
 SOURCES += abcm2ps.c \
 		abcparse.c \
 		buffer.c \
