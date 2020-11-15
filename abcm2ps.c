@@ -574,7 +574,7 @@ static void set_opt(char *w, char *v)
 			"cmd_line", 0);
 }
 
-/* -- main program -- */
+/* -- main entry point -- */
 int abcm2ps(int argc, char **argv)
 {
 	unsigned j;

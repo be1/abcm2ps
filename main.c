@@ -14,9 +14,11 @@
  */
 
 #include "abcm2ps.h"
-
+#include <stdlib.h>
 /* -- main program -- */
 int main(int argc, char **argv)
 {
-	return abcm2ps(argc, argv);
+	if (abcm2ps(argc, argv))
+		exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }

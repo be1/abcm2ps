@@ -1,5 +1,6 @@
-TEMPLATE = lib
-CONFIG = staticlib
+TEMPLATE = app
+CONFIG += link_pkgconfig
+PKGCONFIG += pangocairo
 SOURCES += abcm2ps.c \
 		abcparse.c \
 		buffer.c \
@@ -12,7 +13,8 @@ SOURCES += abcm2ps.c \
 		parse.c \
 		subs.c \
 		svg.c \
-		syms.c
+		syms.c \
+		main.c
 HEADERS += abcm2ps.h
 VERSION = 8.14.9
 VDATE = 2020-06-21

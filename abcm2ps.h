@@ -1,4 +1,7 @@
 /* -- general macros -- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <stdio.h>
 #include <time.h>
@@ -242,6 +245,41 @@ struct posit_s {
 };
 
 /* music element */
+struct key_s {		/* K: info */
+	signed char sf;		/* sharp (> 0) flats (< 0) */
+	char empty;		/* clef alone if 1, 'none' if 2 */
+	char exp;		/* exp (1) or mod (0) */
+	//			char mode;		/* mode */
+	//					/* 0: Ionian, 1: Dorian, 2: Phrygian, 3: Lydian,
+	//					 * 4: Mixolydian, 5: Aeolian, 6: Locrian */
+	char instr;		/* specific instrument */
+#define K_HP 1				/* bagpipe */
+#define K_Hp 2
+#define K_DRUM 3			/* percussion */
+	signed char nacc;	/* number of explicit accidentals */
+	signed char cue;	/* cue voice (scale 0.7) */
+	signed char octave;	/* 'octave=' */
+#define NO_OCTAVE 10				/* no 'octave=' */
+	unsigned char microscale; /* microtone denominator - 1 */
+	char clef_delta;	/* clef delta */
+	char key_delta;		// tonic base
+	char *stafflines;
+	float staffscale;
+	signed char pits[8];
+	unsigned char accs[8];
+};
+
+struct meter_s {	/* M: info */
+	short wmeasure;		/* duration of a measure */
+	unsigned char nmeter;	/* number of meter elements */
+	char expdur;		/* explicit measure duration */
+#define MAX_MEASURE 16
+	struct {
+		char top[8];	/* top value */
+		char bot[2];	/* bottom value */
+	} meter[MAX_MEASURE];
+};
+
 struct SYMBOL { 		/* struct for a drawable symbol */
 	struct SYMBOL *abc_next, *abc_prev; /* source linkage */
 	struct SYMBOL *next, *prev;	/* voice linkage */
@@ -380,42 +418,11 @@ struct SYMBOL { 		/* struct for a drawable symbol */
 	char *text;		/* main text (INFO, PSCOM),
 				 * guitar chord (NOTE, REST, BAR) */
 	union {			/* type dependent part */
-		struct key_s {		/* K: info */
-			signed char sf;		/* sharp (> 0) flats (< 0) */
-			char empty;		/* clef alone if 1, 'none' if 2 */
-			char exp;		/* exp (1) or mod (0) */
-//			char mode;		/* mode */
-//					/* 0: Ionian, 1: Dorian, 2: Phrygian, 3: Lydian,
-//					 * 4: Mixolydian, 5: Aeolian, 6: Locrian */
-			char instr;		/* specific instrument */
-#define K_HP 1				/* bagpipe */
-#define K_Hp 2
-#define K_DRUM 3			/* percussion */
-			signed char nacc;	/* number of explicit accidentals */
-			signed char cue;	/* cue voice (scale 0.7) */
-			signed char octave;	/* 'octave=' */
-#define NO_OCTAVE 10				/* no 'octave=' */
-			unsigned char microscale; /* microtone denominator - 1 */
-			char clef_delta;	/* clef delta */
-			char key_delta;		// tonic base
-			char *stafflines;
-			float staffscale;
-			signed char pits[8];
-			unsigned char accs[8];
-		} key;
+		struct key_s key;
 		struct {		/* L: info */
 			int base_length;	/* basic note length */
 		} length;
-		struct meter_s {	/* M: info */
-			short wmeasure;		/* duration of a measure */
-			unsigned char nmeter;	/* number of meter elements */
-			char expdur;		/* explicit measure duration */
-#define MAX_MEASURE 16
-			struct {
-				char top[8];	/* top value */
-				char bot[2];	/* bottom value */
-			} meter[MAX_MEASURE];
-		} meter;
+		struct meter_s meter;
 		struct {		/* Q: info */
 			char *str1;		/* string before */
 			short beats[4];		/* up to 4 beats */
@@ -631,6 +638,8 @@ struct STAFF_S {
 };
 extern struct STAFF_S staff_tb[MAXSTAFF];
 extern int nstaff;		/* (0..MAXSTAFF-1) */
+
+struct key_s;
 
 struct VOICE_S {
 	char id[VOICE_ID_SZ];	/* voice id */
@@ -906,3 +915,6 @@ void svg_close();
 /* syms.c */
 void define_font(char *name, int num, int enc);
 void define_symbols(void);
+#ifdef __cplusplus
+}
+#endif
