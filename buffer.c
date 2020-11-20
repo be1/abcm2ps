@@ -34,7 +34,7 @@ static float cur_scale = 1.0;	/* current scale */
 static float maxy;		/* usable vertical space in page */
 static float remy;		/* remaining vertical space in page */
 static float bposy;		/* current position in buffered data */
-static int nepsf;		/* counter for -E/-g output files */
+extern int nepsf;		/* counter for -E/-g output files */
 static int nbpages;		/* number of pages in the output file */
 	int outbufsz;		/* size of outbuf */
 static char outfnam[FILENAME_MAX]; /* internal file name for open/close */
@@ -140,7 +140,7 @@ static int init_ps(char *str)
 {
 	time_t ltime;
 	unsigned i;
-	char version[] = "/creator [(abcm2ps) " VERSION "] def";
+	char version[] = "/creator [(abcm2ps) " AVERSION "] def";
 
 	if (epsf) {
 		cur_lmarg = min_lmarg - 10;
@@ -166,7 +166,7 @@ static int init_ps(char *str)
 #else
 	strftime(tex_buf, TEX_BUF_SZ, "%b %#d, %Y %H:%M", localtime(&ltime));
 #endif
-	fprintf(fout, "%%%%Creator: abcm2ps-" VERSION "\n"
+	fprintf(fout, "%%%%Creator: abcm2ps-" AVERSION "\n"
 		"%%%%CreationDate: %s\n", tex_buf);
 	if (!epsf)
 		fprintf(fout, "%%%%Pages: (atend)\n");
@@ -419,7 +419,7 @@ static void format_hf(char *d, char *p)
 			d += sprintf(d, "%s", tex_buf);
 			break;
 		case 'V':
-			d += sprintf(d,"abcm2ps-"  VERSION);
+			d += sprintf(d,"abcm2ps-"  AVERSION);
 			break;
 		default:
 			continue;

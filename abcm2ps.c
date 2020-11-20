@@ -13,6 +13,7 @@
  * (at your option) any later version.
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
@@ -30,6 +31,7 @@
 
 /* -- global variables -- */
 
+int nepsf = 0;				/* eps/ps or svg file number */
 INFO info;
 struct SYMBOL *sym;		/* (points to the symbols of the current voice) */
 
@@ -421,7 +423,7 @@ static void display_version(int full)
 {
 	FILE *log = strcmp(outfn, "-") == 0 ? stderr : stdout;
 
-	fputs("abcm2ps-" VERSION " (" VDATE ")\n", log);
+	fputs("abcm2ps-" AVERSION " (" VDATE ")\n", log);
 	if (!full)
 		return;
 	fputs("Options:"
@@ -574,6 +576,38 @@ static void set_opt(char *w, char *v)
 			"cmd_line", 0);
 }
 
+static void reset_globals()
+{
+	nepsf = 0;
+	in_fname = NULL;
+	for (int i = 0; i < MAXAREAL; i++) {
+		//free(str_c[i]);
+		//free(str_r[i]);
+	}
+	memset(str_c, 0, MAXAREAL * sizeof (struct str_a*));
+	memset(str_r, 0, MAXAREAL * sizeof (struct str_a*));
+
+	memset(&notitle, 0, sizeof (struct SYMBOL));
+	def_fmt_done = 0;
+	styd = DEFAULT_FDIR;
+	ncmdtblt = 0;
+	memset(cmdtblts, 0, MAXCMDTBLT * sizeof (struct cmdtblt_s));
+
+	for (int i = 0; i < MAXTBLT; i++) {
+		//free(tblts[i]);
+	}
+	memset(tblts, 0, MAXTBLT * sizeof (struct tblt_s));
+
+	s_argv = NULL;
+	s_argc = 0;
+
+	pipeformat = 0;
+	pagenum = 1;
+	pagenum_nr = 1;
+	tunenum = 0;
+}
+
+
 /* -- main entry point -- */
 int abcm2ps(int argc, char **argv)
 {
@@ -585,6 +619,8 @@ int abcm2ps(int argc, char **argv)
 
 	outfn[0] = '\0';
 	init_outbuf(64);
+
+	reset_globals();
 
 	/* set the global flags */
 	s_argc = argc;
@@ -682,6 +718,7 @@ int abcm2ps(int argc, char **argv)
 	if (!quiet)
 		display_version(0);
 
+	setlocale(LC_NUMERIC, "C");
 	/* initialize */
 	clrarena(0);				/* global */
 	clrarena(1);				/* tunes */
@@ -721,7 +758,10 @@ int abcm2ps(int argc, char **argv)
 			if (p[1] == '\0') {		/* '-' alone */
 				if (in_fname) {
 					int ret = treat_abc_file(in_fname);
-					if (ret) return ret; /* must exit() */
+					if (ret) {
+						setlocale(LC_NUMERIC, "");
+						return ret; /* must exit() */
+					}
 					frontend((unsigned char *) "select\n", FE_FMT,
 							"cmd_line", 0);
 				}
@@ -825,6 +865,7 @@ int abcm2ps(int argc, char **argv)
 				p += 2;
 				if (--argc <= 0) {
 					error(1, NULL, "No argument for '--'");
+					setlocale(LC_NUMERIC, "");
 					return EXIT_FAILURE;
 				}
 				argv++;
@@ -861,6 +902,7 @@ int abcm2ps(int argc, char **argv)
 						do_tune();
 					}
 					print_format();
+					setlocale(LC_NUMERIC, "");
 					return EXIT_SUCCESS;
 				case 'i':
 					showerror = 1;
@@ -928,6 +970,7 @@ int abcm2ps(int argc, char **argv)
 							error(1, NULL,
 								"Missing parameter after '-%c' - aborting",
 								c);
+							setlocale(LC_NUMERIC, "");
 							return EXIT_FAILURE;
 						}
 					} else {
@@ -945,6 +988,7 @@ int abcm2ps(int argc, char **argv)
 								error(1, NULL,
 									"Invalid parameter <%s> for flag -%c",
 									aaa, c);
+								setlocale(LC_NUMERIC, "");
 								return EXIT_FAILURE;
 							}
 						}
@@ -1001,6 +1045,7 @@ int abcm2ps(int argc, char **argv)
 					case 'O':
 						if (strlen(aaa) >= sizeof outfn) {
 							error(1, NULL, "'-O' too large - aborting");
+							setlocale(LC_NUMERIC, "");
 							return(EXIT_FAILURE);
 						}
 						strcpy(outfn, aaa);
@@ -1033,7 +1078,10 @@ int abcm2ps(int argc, char **argv)
 		if (in_fname) {
 			int ret;
 			ret = treat_abc_file(in_fname);
-			if (ret) return ret; /* must exit() */
+			if (ret) {
+				setlocale(LC_NUMERIC, "");
+				return ret; /* must exit() */
+			}
 			frontend((unsigned char *) "select\n", FE_FMT,
 						"cmd_line", 0);
 		}
@@ -1043,7 +1091,10 @@ int abcm2ps(int argc, char **argv)
 	if (in_fname) {
 		int ret;
 		ret = treat_abc_file(in_fname);
-		if (ret) return ret; /* must exit() */
+		if (ret) {
+			setlocale(LC_NUMERIC, "");
+			return ret; /* must exit() */
+		}
 	}
 	if (multicol_start != 0) {		/* lack of %%multicol end */
 		error(1, NULL, "Lack of %%%%multicol end");
@@ -1055,9 +1106,11 @@ int abcm2ps(int argc, char **argv)
 	}
 	if (!epsf && !fout) {
 		error(1, NULL, "Nothing to generate!");
+		setlocale(LC_NUMERIC, "");
 		return EXIT_FAILURE;
 	}
 	close_output_file();
+	setlocale(LC_NUMERIC, "");
 	return severity == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 

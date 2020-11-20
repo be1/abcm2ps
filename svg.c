@@ -1191,7 +1191,7 @@ void define_svg_symbols(char *title, int num, float w, float h)
 				"<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
 				"<head>\n"
 				"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
-				"<meta name=\"generator\" content=\"abcm2ps-" VERSION "\"/>\n",
+				"<meta name=\"generator\" content=\"abcm2ps-" AVERSION "\"/>\n",
 				fout);
 			gen_info();
 			fprintf(fout,
@@ -1233,7 +1233,7 @@ void define_svg_symbols(char *title, int num, float w, float h)
 		define_head(w, h);
 		xml_str_out(title);
 		fprintf(fout, svg_head3, epsf ? "tune" : "page", num);
-		fputs("<!-- Creator: abcm2ps-" VERSION " -->\n", fout);
+		fputs("<!-- Creator: abcm2ps-" AVERSION " -->\n", fout);
 		gen_info();
 		if (cfmt.bgcolor && cfmt.bgcolor[0] != '\0')
 			fprintf(fout,

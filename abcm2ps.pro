@@ -1,8 +1,9 @@
 include(../common.pri)
-TEMPLATE = app
+TEMPLATE = lib
 TARGET = abcm2ps
-CONFIG += link_pkgconfig
-QMAKE_CFLAGS += -DHAVE_PANGO=1
+CONFIG -= qt
+CONFIG += link_pkgconfig debug staticlib
+QMAKE_CFLAGS += -DHAVE_PANGO=1 -O0 -g
 PKGCONFIG += pangocairo pangoft2
 SOURCES += abcm2ps.c \
 		abcparse.c \
@@ -16,11 +17,10 @@ SOURCES += abcm2ps.c \
 		parse.c \
 		subs.c \
 		svg.c \
-		syms.c \
-		main.c
+		syms.c
 HEADERS += abcm2ps.h
-VERSION = 8.14.9
-VDATE = 2020-06-21
+AVERSION = 8.14.9~qabc
+VDATE = 2020-11-20
 DEFAULT_FDIR = $$ABCM2PS
 config.input = config.h.in
 config.output = config.h

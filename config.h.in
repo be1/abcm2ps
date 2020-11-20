@@ -12,5 +12,5 @@
 /* default directory to search for format files */
 #define DEFAULT_FDIR \"$$DEFAULT_FDIR\"
 
-#define VERSION \"$$VERSION\"
+#define AVERSION \"$$AVERSION\"
 #define VDATE \"$$VDATE\"

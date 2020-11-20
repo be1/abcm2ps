@@ -1,12 +1,12 @@
 #! /bin/sh
 
 # (automatic update)
-VERSION=8.14.9
-VDATE=2020-06-21
+AVERSION=8.14.9~qabc
+VDATE=2020-11-17
 
 CC=gcc
 PKG_CONFIG=pkg-config
-CFLAGS="-g -O0 -g -Wall -pipe"
+CFLAGS="-g -O0 -Wall -Wextra -pipe -fPIC"
 
 srcdir=.
 prefix=/usr/local
@@ -87,7 +87,7 @@ s+@LDLIBS@+$LDLIBS+
 s+@INSTALL@+$INSTALL+
 s+@INSTALL_DATA@+$INSTALL_DATA+
 s+@INSTALL_PROGRAM@+$INSTALL_PROGRAM+
-s+@VERSION@+$VERSION+
+s+@AVERSION@+$AVERSION+
 s+@prefix@+$prefix+
 s+@exec_prefix@+$exec_prefix+
 s+@srcdir@+$srcdir+
@@ -97,7 +97,7 @@ s+@mandir@+$mandir+
 s+@docdir@+$docdir+" "$srcdir/Makefile.in" > Makefile
 echo "Makefile created"
 
-sed "s+define VERSION .*+define VERSION \"$VERSION\"+
+sed "s+define AVERSION .*+define AVERSION \"$AVERSION\"+
 s+define VDATE .*+define VDATE \"$VDATE\"+
 s+define DEFAULT_FDIR .*+define DEFAULT_FDIR \"$DEFAULT_FDIR\"+
 " "$srcdir/config.h.in" > config.h

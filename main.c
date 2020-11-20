@@ -18,7 +18,5 @@
 /* -- main program -- */
 int main(int argc, char **argv)
 {
-	if (abcm2ps(argc, argv))
-		exit(EXIT_FAILURE);
-	exit(EXIT_SUCCESS);
+	return abcm2ps(argc, argv);
 }
