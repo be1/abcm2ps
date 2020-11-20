@@ -607,6 +607,12 @@ static void reset_globals()
 	tunenum = 0;
 }
 
+void abcminit()
+{
+#ifdef HAVE_PANGO
+	pg_init();
+#endif
+}
 
 /* -- main entry point -- */
 int abcm2ps(int argc, char **argv)
@@ -733,9 +739,6 @@ int abcm2ps(int argc, char **argv)
 	/* if not set, try to find where is the default format directory */
 	if (styd[0] == '\0')
 		wherefmtdir();
-#endif
-#ifdef HAVE_PANGO
-	pg_init();
 #endif
 
 	/* if ABC embedded in XML, open the output file */

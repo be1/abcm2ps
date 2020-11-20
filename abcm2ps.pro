@@ -3,7 +3,7 @@ TEMPLATE = lib
 TARGET = abcm2ps
 CONFIG -= qt
 CONFIG += link_pkgconfig debug staticlib
-QMAKE_CFLAGS += -DHAVE_PANGO=1 -O0 -g
+QMAKE_CFLAGS += -DHAVE_PANGO=1 -O0 -g -Dlinux
 PKGCONFIG += pangocairo pangoft2
 SOURCES += abcm2ps.c \
 		abcparse.c \
@@ -21,7 +21,7 @@ SOURCES += abcm2ps.c \
 HEADERS += abcm2ps.h
 AVERSION = 8.14.9~qabc
 VDATE = 2020-11-20
-DEFAULT_FDIR = $$ABCM2PS
+DEFAULT_FDIR = $$ABCM2PSDIR
 config.input = config.h.in
 config.output = config.h
 QMAKE_SUBSTITUTES += config
