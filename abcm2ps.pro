@@ -27,5 +27,4 @@ config.output = config.h
 QMAKE_SUBSTITUTES += config
 fmt.path = $$ABCM2PSDIR
 fmt.files = abc2svg.ttf flute.fmt landscape.fmt musicfont.fmt
-target.path = $$ABCM2PSDIR
-INSTALLS += target fmt
+INSTALLS += fmt
