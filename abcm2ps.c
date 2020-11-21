@@ -605,6 +605,11 @@ static void reset_globals()
 	pagenum = 1;
 	pagenum_nr = 1;
 	tunenum = 0;
+
+	if (cfmt.header) {
+        free(cfmt.header);
+		cfmt.header = NULL;
+	}
 }
 
 void abcminit()
