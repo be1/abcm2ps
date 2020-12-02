@@ -94,7 +94,7 @@ static struct {
 	"	M-2.5 1c-4.5 4.6 -7.5 12.2 -4.4 26.8\n"
 	"	c3.5 14.3 3.2 21.7 -2.1 24.2\n"
 	"	7.4 -2.4 7.3 -14.2 3.5 -29.5\n"
-	"	-2.7 -9.5 -1.5 -16.2 3 -21.5\"/>\n"},
+    "	-2.7 -9.5 -1.5 -16.2 3 -21.5\"/>\n", 0, 0},
 #define D_utclef 1
 {	"<path id=\"utclef\" class=\"fill\" d=\"m-50 -90\n"
 	"	c-72 -41 -72 -158 52 -188\n"
@@ -114,13 +114,13 @@ static struct {
 	"	-74 106 -257 168 -255 316\n"
 	"	9 153 148 185 252 133\n"
 	"	86 -65 29 -192 -80 -176\n"
-	"	-71 12 -105 67 -59 124\"/>\n"},
+    "	-71 12 -105 67 -59 124\"/>\n", 0, 0},
 #define D_tclef 2
 {	"<use id=\"tclef\" transform=\"translate(0,6) scale(0.045)\"\n"
-	"	xlink:href=\"#utclef\"/>\n", D_utclef},
+    "	xlink:href=\"#utclef\"/>\n", D_utclef, 0},
 #define D_stclef 3
 {	"<use id=\"stclef\" transform=\"translate(0,5.4) scale(0.037)\"\n"
-	"	xlink:href=\"#utclef\"/>\n", D_utclef},
+    "	xlink:href=\"#utclef\"/>\n", D_utclef, 0},
 #define D_ubclef 4
 {	"<path id=\"ubclef\" class=\"fill\" d=\"m-200 -87\n"
 	"	c124 -35 222 -78 254 -236\n"
@@ -134,13 +134,13 @@ static struct {
 	"	0 37 -51 36 -51 0\n"
 	"	m-2 -129\n"
 	"	c0 -36 51 -34 51 0\n"
-	"	0 38 -51 37 -51 0\"/>\n"},
+    "	0 38 -51 37 -51 0\"/>\n", 0, 0},
 #define D_bclef 5
 {	"<use id=\"bclef\" transform=\"translate(0,18) scale(0.045)\"\n"
-	"	xlink:href=\"#ubclef\"/>\n", D_ubclef},
+    "	xlink:href=\"#ubclef\"/>\n", D_ubclef, 0},
 #define D_sbclef 6
 {	"<use id=\"sbclef\" transform=\"translate(0,14.5) scale(0.037)\"\n"
-	"	xlink:href=\"#ubclef\"/>\n", D_ubclef},
+    "	xlink:href=\"#ubclef\"/>\n", D_ubclef, 0},
 #define D_ucclef 7
 {	"<path id=\"ucclef\" class=\"fill\" d=\"\n"
 	"	m-51 -264\n"
@@ -166,25 +166,25 @@ static struct {
 	"	h57\n"
 	"	v529\n"
 	"	h-57\n"
-	"	v-529\"/>\n"},
+    "	v-529\"/>\n", 0, 0},
 #define D_cclef 8
 {	"<use id=\"cclef\" transform=\"translate(0,12) scale(0.045)\"\n"
-	"	xlink:href=\"#ucclef\"/>\n", D_ucclef},
+    "	xlink:href=\"#ucclef\"/>\n", D_ucclef, 0},
 #define D_scclef 9
 {	"<use id=\"scclef\" transform=\"translate(0,9.5) scale(0.037)\"\n"
-	"	xlink:href=\"#ucclef\"/>\n", D_ucclef},
+    "	xlink:href=\"#ucclef\"/>\n", D_ucclef, 0},
 #define D_pclef 10
-{	"<path id=\"pclef\" d=\"m-2.7 9h5.4v-18h-5.4v18\"stroke=\"black\" fill=\"none\" stroke-width=\"1.4\"/>\n"},
+{	"<path id=\"pclef\" d=\"m-2.7 9h5.4v-18h-5.4v18\"stroke=\"black\" fill=\"none\" stroke-width=\"1.4\"/>\n", 0, 0},
 #define D_hd 11
 {	"<ellipse id=\"hd\" rx=\"4.1\" ry=\"2.9\"\n"
-	"	transform=\"rotate(-20)\" class=\"fill\"/>\n"},
+    "	transform=\"rotate(-20)\" class=\"fill\"/>\n", 0, 0},
 #define D_Hd 12
 {	"<path id=\"Hd\" class=\"fill\" d=\"m3 -1.6\n"
 	"	c-1 -1.8 -7 1.4 -6 3.2\n"
 	"	1 1.8 7 -1.4 6 -3.2\n"
 	"	m0.5 -0.3\n"
 	"	c2 3.8 -5 7.6 -7 3.8\n"
-	"	-2 -3.8 5 -7.6 7 -3.8\"/>\n"},
+    "	-2 -3.8 5 -7.6 7 -3.8\"/>\n", 0, 0},
 #define D_HD 13
 {	"<path id=\"HD\" class=\"fill\" d=\"m-2.7 -1.4\n"
 	"	c1.5 -2.8 6.9 0 5.3 2.7\n"
@@ -193,67 +193,67 @@ static struct {
 	"	c0 -1.5 -2.2 -3 -5.6 -3\n"
 	"	-3.4 0 -5.6 1.5 -5.6 3\n"
 	"	0 1.5 2.2 3 5.6 3\n"
-	"	3.4 0 5.6 -1.5 5.6 -3\"/>\n"},
+    "	3.4 0 5.6 -1.5 5.6 -3\"/>\n", 0, 0},
 #define D_HDD 14
 {	"<g id=\"HDD\">\n"
 	"	<use xlink:href=\"#HD\"/>\n"
 	"	<path d=\"m-6 -4v8m12 0v-8\" class=\"stroke\"/>\n"
-	"</g>\n", D_HD},
+    "</g>\n", D_HD, 0},
 #define D_breve 15
 {	"<g id=\"breve\" class=\"stroke\">\n"
 	"	<path d=\"m-6 -2.7h12m0 5.4h-12\" stroke-width=\"2.5\"/>\n"
 	"	<path d=\"m-6 -5v10m12 0v-10\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_longa 16
 {	"<g id=\"longa\" class=\"stroke\">\n"
 	"	<path d=\"m-6 2.7h12m0 -5.4h-12\" stroke-width=\"2.5\"/>\n"
 	"	<path d=\"m-6 5v-10m12 0v16\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_ghd 17
 {	"<path id=\"ghd\" class=\"fill\" d=\"m2.2 -1.5\n"
 	"	c-1.32 -2.31 -5.94 0.33 -4.62 2.64\n"
-	"	1.32 2.31 5.94 -0.33 4.62 -2.64\"/>\n"},
+    "	1.32 2.31 5.94 -0.33 4.62 -2.64\"/>\n", 0, 0},
 #define D_r00 18
 {	"<rect id=\"r00\" class=\"fill\"\n"
-	"	x=\"-1.6\" y=\"-6\" width=\"3\" height=\"12\"/>\n"},
+    "	x=\"-1.6\" y=\"-6\" width=\"3\" height=\"12\"/>\n", 0, 0},
 #define D_r0 19
 {	"<rect id=\"r0\" class=\"fill\"\n"
-	"	x=\"-1.6\" y=\"-6\" width=\"3\" height=\"6\"/>\n"},
+    "	x=\"-1.6\" y=\"-6\" width=\"3\" height=\"6\"/>\n", 0, 0},
 #define D_r1 20
 {	"<rect id=\"r1\" class=\"fill\"\n"
-	"	x=\"-3.5\" y=\"-6\" width=\"7\" height=\"3\"/>\n"},
+    "	x=\"-3.5\" y=\"-6\" width=\"7\" height=\"3\"/>\n", 0, 0},
 #define D_r2 21
 {	"<rect id=\"r2\" class=\"fill\"\n"
-	"	x=\"-3.5\" y=\"-3\" width=\"7\" height=\"3\"/>\n"},
+    "	x=\"-3.5\" y=\"-3\" width=\"7\" height=\"3\"/>\n", 0, 0},
 #define D_r4 22
 {	"<path id=\"r4\" class=\"fill\" d=\"m-1 -8.5\n"
 	"	l3.6 5.1 -2.1 5.2 2.2 4.3\n"
 	"	c-2.6 -2.3 -5.1 0 -2.4 2.6\n"
 	"	-4.8 -3 -1.5 -6.9 1.4 -4.1\n"
-	"	l-3.1 -4.5 1.9 -5.1 -1.5 -3.5\"/>\n"},
+    "	l-3.1 -4.5 1.9 -5.1 -1.5 -3.5\"/>\n", 0, 0},
 #define D_r8e 23
 {	"<path id=\"r8e\" class=\"fill\" d=\"m 0 0\n"
 	"	c-1.5 1.5 -2.4 2 -3.6 2\n"
 	"	2.4 -2.8 -2.8 -4 -2.8 -1.2\n"
-	"	c0 2.7 4.3 2.4 5.9 0.6\"/>\n"},
+    "	c0 2.7 4.3 2.4 5.9 0.6\"/>\n", 0, 0},
 #define D_r8 24
 {	"<g id=\"r8\">\n"
 	"	<path d=\"m3.3 -4l-3.4 9.6\" class=\"stroke\"/>\n"
 	"	<use x=\"3.4\" y=\"-4\" xlink:href=\"#r8e\"/>\n"
-	"</g>\n", D_r8e},
+    "</g>\n", D_r8e, 0},
 #define D_r16 25
 {	"<g id=\"r16\">\n"
 	"	<path d=\"m3.3 -4l-4 15.6\" class=\"stroke\"/>\n"
 	"	<use x=\"3.4\" y=\"-4\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"1.9\" y=\"2\" xlink:href=\"#r8e\"/>\n"
-	"</g>\n", D_r8e},
+    "</g>\n", D_r8e, 0},
 #define D_r32 26
 {	"<g id=\"r32\">\n"
 	"	<path d=\"m4.8 -10l-5.5 21.6\" class=\"stroke\"/>\n"
 	"	<use x=\"4.9\" y=\"-10\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"3.4\" y=\"-4\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"1.9\" y=\"2\" xlink:href=\"#r8e\"/>\n"
-	"</g>\n", D_r8e},
+    "</g>\n", D_r8e, 0},
 #define D_r64 27
 {	"<g id=\"r64\">\n"
 	"	<path d=\"m4.8 -10 l-7 27.6\" class=\"stroke\"/>\n"
@@ -261,7 +261,7 @@ static struct {
 	"	<use x=\"3.4\" y=\"-4\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"1.9\" y=\"2\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"0.4\" y=\"8\" xlink:href=\"#r8e\"/>\n"
-	"</g>\n", D_r8e},
+    "</g>\n", D_r8e, 0},
 #define D_r128 28
 {	"<g id=\"r128\">\n"
 	"	<path d=\"m5.8 -16 l-8.5 33.6\" class=\"stroke\"/>\n"
@@ -270,12 +270,12 @@ static struct {
 	"	<use x=\"2.9\" y=\"-4\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"1.4\" y=\"2\" xlink:href=\"#r8e\"/>\n"
 	"	<use x=\"0.1\" y=\"8\" xlink:href=\"#r8e\"/>\n"
-	"</g>\n", D_r8e},
+    "</g>\n", D_r8e, 0},
 #define D_mrest 29
 {	"<g id=\"mrest\" class=\"stroke\">\n"
 	"	<path d=\"m-20 6v-12m40 0v12\"/>\n"
 	"	<path d=\"m-20 0h40\" stroke-width=\"5\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_usharp 30
 {	"<path id=\"usharp\" class=\"fill\" d=\"\n"
 	"	m136 -702\n"
@@ -293,7 +293,7 @@ static struct {
 	"	m-338 442\n"
 	"	v116\n"
 	"	l338 -98\n"
-	"	v-114\"/>\n"},
+    "	v-114\"/>\n", 0, 0},
 #define D_uflat 31
 {	"<path id=\"uflat\" class=\"fill\" d=\"\n"
 	"	m100 -746\n"
@@ -305,7 +305,7 @@ static struct {
 	"	100 110 -120 326 -208 348\n"
 	"	m0 -28\n"
 	"	c54 0 200 -206 130 -290\n"
-	"	-50 -60 -130 -4 -130 34\"/>\n"},
+    "	-50 -60 -130 -4 -130 34\"/>\n", 0, 0},
 #define D_unat 32
 {	"<path id=\"unat\" class=\"fill\" d=\"\n"
 	"	m96 -750\n"
@@ -322,7 +322,7 @@ static struct {
 	"	m0 592\n"
 	"	v-190\n"
 	"	l182 -52\n"
-	"	v188\"/>\n"},
+    "	v188\"/>\n", 0, 0},
 #define D_udblesharp 33
 {	"<path id=\"udblesharp\" class=\"fill\" d=\"\n"
 	"	m240 -282\n"
@@ -341,7 +341,7 @@ static struct {
 	"	38 38 68 72 68 156\n"
 	"	h96\n"
 	"	v-96\n"
-	"	c-84 0 -118 -30 -158 -68\"/>\n"},
+    "	c-84 0 -118 -30 -158 -68\"/>\n", 0, 0},
 #define D_udbleflat 34
 {	"<path id=\"udbleflat\" class=\"fill\" d=\"\n"
 	"	m20 -746\n"
@@ -363,54 +363,54 @@ static struct {
 	"	75 110 -98 326 -156 348\n"
 	"	m0 -28\n"
 	"	c40 0 150 -206 97 -290\n"
-	"	-37 -60 -97 -4 -97 34\"/>\n"},
+    "	-37 -60 -97 -4 -97 34\"/>\n", 0, 0},
 #define D_sh0 35
 {	"<use id=\"sh0\" transform=\"translate(-4,5) scale(0.018)\"\n"
-	"	xlink:href=\"#usharp\"/>\n", D_usharp},
+    "	xlink:href=\"#usharp\"/>\n", D_usharp, 0},
 #define D_ft0 36
 {	"<use id=\"ft0\" transform=\"translate(-3.5,3.5) scale(0.018)\"\n"
-	"	xlink:href=\"#uflat\"/>\n", D_uflat},
+    "	xlink:href=\"#uflat\"/>\n", D_uflat, 0},
 #define D_nt0 37
 {	"<use id=\"nt0\" transform=\"translate(-3,5) scale(0.018)\"\n"
-	"	xlink:href=\"#unat\"/>\n", D_unat},
+    "	xlink:href=\"#unat\"/>\n", D_unat, 0},
 #define D_dsh0 38
 {	"<use id=\"dsh0\" transform=\"translate(-4,5) scale(0.018)\"\n"
-	"	xlink:href=\"#udblesharp\"/>\n", D_udblesharp},
+    "	xlink:href=\"#udblesharp\"/>\n", D_udblesharp, 0},
 #define D_dft0 39
 {	"<use id=\"dft0\" transform=\"translate(-4,3.5) scale(0.018)\"\n"
-	"	xlink:href=\"#udbleflat\"/>\n", D_udbleflat},
+    "	xlink:href=\"#udbleflat\"/>\n", D_udbleflat, 0},
 #define D_sh1 40
 {	"<g id=\"sh1\">\n"
 	"	<path d=\"M0 7.8v-15.4\" class=\"stroke\"/>\n"
 	"	<path class=\"fill\" d=\"M-1.8 2.7l3.6 -1.1v2.2l-3.6 1.1v-2.2z\n"
 	"		M-1.8 -3.7l3.6 -1.1v2.2l-3.6 1.1v-2.2\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_sh513 41
 {	"<g id=\"sh513\">\n"
 	"	<path d=\"M-2.5 8.7v-15.4M0 7.8v-15.4M2.5 6.9v-15.4\" class=\"stroke\"/>\n"
 	"	<path class=\"fill\" d=\"M-3.7 3.1l7.4 -2.2v2.2l-7.4 2.2v-2.2z\n"
 	"		M-3.7 -3.2l7.4 -2.2v2.2l-7.4 2.2v-2.2\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_ft1 42
 {	"<g id=\"ft1\" transform=\"scale(-1,1)\">\n"
 	"	<use xlink:href=\"#ft0\"/>\n"
-	"</g>\n", D_ft0},
+    "</g>\n", D_ft0, 0},
 #define D_ft513 43
 {	"<g id=\"ft513\">\n"
 	"	<path class=\"fill\" d=\"M0.6 -2.7\n"
 	"		c-5.7 -3.1 -5.7 3.6 0 6.7c-3.9 -4 -4 -7.6 0 -5.8\n"
 	"		M1 -2.7c5.7 -3.1 5.7 3.6 0 6.7c3.9 -4 4 -7.6 0 -5.8\"/>\n"
 	"	<path d=\"M1.6 3.5v-13M0 3.5v-13\" stroke=\"black\" fill=\"none\" stroke-width=\".6\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_pshhd 44
 {	"<g id=\"pshhd\">\n"
 	"	<use xlink:href=\"#dsh0\"/>\n"
-	"</g>\n", D_dsh0},
+    "</g>\n", D_dsh0, 0},
 #define D_pfthd 45
 {	"<g id=\"pfthd\">\n"
 	"	<use xlink:href=\"#dsh0\"/>\n"
 	"	<circle r=\"4\" class=\"stroke\"/>\n"
-	"</g>\n", D_dsh0},
+    "</g>\n", D_dsh0, 0},
 #define D_csig 46
 {	"<path id=\"csig\" class=\"fill\" d=\"\n"
 	"	m6 -5.3\n"
@@ -420,83 +420,83 @@ static struct {
 	"	-2 -0.4 -6.4 1.3 -5.8 7\n"
 	"	0.4 6.4 7.9 6.8 9.1 0.7\n"
 	"	-2.3 5.6 -6.7 5.1 -6.8 0\n"
-	"	-0.5 -4.4 0.7 -7.5 3.5 -6.9\"/>\n"},
+    "	-0.5 -4.4 0.7 -7.5 3.5 -6.9\"/>\n", 0, 0},
 #define D_ctsig 47
 {	"<g id=\"ctsig\">\n"
 	"	<use xlink:href=\"#csig\"/>\n"
 	"	<path d=\"m5 8v-16\" class=\"stroke\"/>\n"
-	"</g>\n", D_csig},
+    "</g>\n", D_csig, 0},
 #define D_pmsig 48
 {	"<path id=\"pmsig\" stroke=\"black\" fill=\"none\" stroke-width=\".8\"\n"
-	"	d=\"M0 -7a5 5 0 0 1 0 -10a5 5 0 0 1 0 10\"/>\n"},
+    "	d=\"M0 -7a5 5 0 0 1 0 -10a5 5 0 0 1 0 10\"/>\n", 0, 0},
 #define D_pMsig 49
 {	"<g id=\"pMsig\">\n"
 	"	<use xlink:href=\"#pmsig\"/>\n"
 	"	<path class=\"fill\" d=\"M0 -10a2 2 0 0 1 0 -4a2 2 0 0 1 0 4\"/>\n"
-	"</g>\n", D_pmsig},
+    "</g>\n", D_pmsig, 0},
 #define D_imsig 50
 {	"<path id=\"imsig\" stroke=\"black\" fill=\"none\" stroke-width=\".8\"\n"
-	"	d=\"M3 -8a5 5 0 1 1 0 -8\"/>\n"},
+    "	d=\"M3 -8a5 5 0 1 1 0 -8\"/>\n", 0, 0},
 #define D_iMsig 51
 {	"<g id=\"iMsig\">\n"
 	"	<use xlink:href=\"#imsig\"/>\n"
 	"	<path class=\"fill\" d=\"M0 -10a2 2 0 0 1 0 -4a2 2 0 0 1 0 4\"/>\n"
-	"</g>\n", D_imsig},
+    "</g>\n", D_imsig, 0},
 #define D_hl 52
-{	"<path id=\"hl\" class=\"stroke\" d=\"m-6 0h12\"/>\n"},
+{	"<path id=\"hl\" class=\"stroke\" d=\"m-6 0h12\"/>\n", 0, 0},
 #define D_hl1 53
-{	"<path id=\"hl1\" class=\"stroke\" d=\"m-7 0h14\"/>\n"},
+{	"<path id=\"hl1\" class=\"stroke\" d=\"m-7 0h14\"/>\n", 0, 0},
 #define D_hl2 54
-{	"<path id=\"hl2\" class=\"stroke\" d=\"m-9 0h18\"/>\n"},
+{	"<path id=\"hl2\" class=\"stroke\" d=\"m-9 0h18\"/>\n", 0, 0},
 #define D_ghl 55
-{	"<path id=\"ghl\" class=\"stroke\" d=\"m-3.5 0h7\"/>\n"},
+{	"<path id=\"ghl\" class=\"stroke\" d=\"m-3.5 0h7\"/>\n", 0, 0},
 #define D_rdots 56
 {	"<g id=\"rdots\" class=\"fill\">\n"
 	"	<circle cx=\"0\" cy=\"-9\" r=\"1.2\"/>\n"
 	"	<circle cx=\"0\" cy=\"-15\" r=\"1.2\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_srep 57
-{	"<path id=\"srep\" class=\"fill\" d=\"M-1 6l11 -12h3l-11 12h-3\"/>\n"},
+{	"<path id=\"srep\" class=\"fill\" d=\"M-1 6l11 -12h3l-11 12h-3\"/>\n", 0, 0},
 #define D_mrep 58
 {	"<path id=\"mrep\" class=\"fill\"\n"
 	"    d=\"M-5 -4.5a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\n"
 	"	M4.5 2a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\n"
-	"	M-7 6l11 -12h3l-11 12h-3\"/>\n"},
+    "	M-7 6l11 -12h3l-11 12h-3\"/>\n", 0, 0},
 #define D_mrep2 59
 {	"<g id=\"mrep2\" class=\"fill\">\n"
 	"	<path d=\"M-5.5 -7.5a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\n"
 	"		M5 4.5a1.5 1.5 0 0 1 0 3a1.5 1.5 0 0 1 0 -3\"/>\n"
 	"	<path d=\"M-7 8l14 -10m-14 4l14 -10\" stroke=\"black\" fill=\"none\" stroke-width=\"1.8\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_accent 60
 {	"<g id=\"accent\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\">\n"
 	"	<path d=\"m-4 0l8 -2l-8 -2\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_umrd 61
 {	"<path id=\"umrd\" class=\"fill\" d=\"m0 -4\n"
 	"	l2.2 -2.2 2.1 2.9 0.7 -0.7 0.2 0.2\n"
 	"	-2.2 2.2 -2.1 -2.9 -0.7 0.7\n"
 	"	-2.2 2.2 -2.1 -2.9 -0.7 0.7 -0.2 -0.2\n"
-	"	2.2 -2.2 2.1 2.9 0.7 -0.7\"/>\n"},
+    "	2.2 -2.2 2.1 2.9 0.7 -0.7\"/>\n", 0, 0},
 #define D_lmrd 62
 {	"<g id=\"lmrd\">\n"
 	"	<use xlink:href=\"#umrd\"/>\n"
 	"	<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"-8\" stroke=\"black\" fill=\"none\" stroke-width=\".6\"/>\n"
-	"</g>\n", D_umrd},
+    "</g>\n", D_umrd, 0},
 #define D_grm 63
 {	"<path id=\"grm\" class=\"fill\" d=\"\n"
 	"	m-5 -2.5\n"
 	"	c5 -8.5 5.5 4.5 10 -2\n"
-	"	-5 8.5 -5.5 -4.5 -10 2\"/>\n"},
+    "	-5 8.5 -5.5 -4.5 -10 2\"/>\n", 0, 0},
 #define D_stc 64
-{	"<circle id=\"stc\" class=\"fill\" cx=\"0\" cy=\"-3\" r=\"1.2\"/>\n"},
+{	"<circle id=\"stc\" class=\"fill\" cx=\"0\" cy=\"-3\" r=\"1.2\"/>\n", 0, 0},
 #define D_sld 65
 {	"<path id=\"sld\" class=\"fill\" d=\"\n"
 	"	m-7.2 4.8\n"
 	"	c1.8 0.7 4.5 -0.2 7.2 -4.8\n"
-	"	-2.1 5 -5.4 6.8 -7.6 6\"/>\n"},
+    "	-2.1 5 -5.4 6.8 -7.6 6\"/>\n", 0, 0},
 #define D_emb 66
-{	"<path id=\"emb\" d=\"m-2.5 -3h5\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\" stroke-linecap=\"round\"/>\n"},
+{	"<path id=\"emb\" d=\"m-2.5 -3h5\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\" stroke-linecap=\"round\"/>\n", 0, 0},
 #define D_hld 67
 {	"<g id=\"hld\" class=\"fill\">\n"
 	"	<circle cx=\"0\" cy=\"-3\" r=\"1.3\"/>\n"
@@ -504,22 +504,22 @@ static struct {
 	"		c0 -11.5 15 -11.5 15 0\n"
 	"		h-0.25\n"
 	"		c-1.25 -9 -13.25 -9 -14.5 0\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_cpu 68
 {	"<path id=\"cpu\" class=\"fill\" d=\"\n"
 	"	m-6 0\n"
 	"	c0.4 -7.3 11.3 -7.3 11.7 0\n"
-	"	c-1.3 -6 -10.4 -6 -11.7 0\"/>\n"},
+    "	c-1.3 -6 -10.4 -6 -11.7 0\"/>\n", 0, 0},
 #define D_upb 69
 {	"<path id=\"upb\" class=\"stroke\" d=\"\n"
 	"	m-2.6 -9.4\n"
 	"	l2.6 8.8\n"
-	"	2.6 -8.8\"/>\n"},
+    "	2.6 -8.8\"/>\n", 0, 0},
 #define D_dnb 70
 {	"<g id=\"dnb\">\n"
 	"	<path d=\"M-3.2 -2v-7.2m6.4 0v7.2\" class=\"stroke\"/>\n"
 	"	<path d=\"M-3.2 -6.8v-2.4l6.4 0v2.4\" class=\"fill\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_sgno 71
 {	"<g id=\"sgno\">\n"
 	"    <path class=\"fill\" d=\"m0 -3\n"
@@ -534,39 +534,39 @@ static struct {
 	"    <line x1=\"-6\" y1=\"-4.2\" x2=\"6.6\" y2=\"-16.8\" class=\"stroke\"/>\n"
 	"    <circle cx=\"-6\" cy=\"-10\" r=\"1.2\"/>\n"
 	"    <circle cx=\"6\" cy=\"-11\" r=\"1.2\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_coda 72
 {	"<g id=\"coda\" class=\"stroke\">\n"
 	"	<path d=\"m0 -2v-20m-10 10h20\"/>\n"
 	"	<circle cx=\"0\" cy=\"-12\" r=\"6\" stroke-width=\"1.7\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_dplus 73
 {	"<path id=\"dplus\" stroke=\"black\" fill=\"none\" stroke-width=\"1.7\"\n"
-	"	d=\"m0 -0.5v-6m-3 3h6\"/>\n"},
+    "	d=\"m0 -0.5v-6m-3 3h6\"/>\n", 0, 0},
 #define D_lphr 74
 {	"<path id=\"lphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
-	"	d=\"m0 0v18\"/>\n"},
+    "	d=\"m0 0v18\"/>\n", 0, 0},
 #define D_mphr 75
 {	"<path id=\"mphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
-	"	d=\"m0 0v12\"/>\n"},
+    "	d=\"m0 0v12\"/>\n", 0, 0},
 #define D_sphr 76
 {	"<path id=\"sphr\" stroke=\"black\" fill=\"none\" stroke-width=\"1.2\"\n"
-	"	d=\"m0 0v6\"/>\n"},
+    "	d=\"m0 0v6\"/>\n", 0, 0},
 #define D_opend 77
 {	"<circle id=\"opend\" class=\"stroke\"\n"
-	"	cx=\"0\" cy=\"-3\" r=\"2.5\"/>\n"},
+    "	cx=\"0\" cy=\"-3\" r=\"2.5\"/>\n", 0, 0},
 #define D_snap 78
 {	"<path id=\"snap\" class=\"stroke\"\n"
 	"	d=\"M-3 -6\n"
 	"		c0 -5 6 -5 6 0\n"
 	"		c0 5 -6 5 -6 0\n"
-	"		M0 -5v6\"/>\n"},
+    "		M0 -5v6\"/>\n", 0, 0},
 #define D_thumb 79
 {	"<path id=\"thumb\" class=\"stroke\"\n"
 	"	d=\"M-2.5 -7\n"
 	"		c0 -6 5 -6 5 0\n"
 	"		c0 6 -5 6 -5 0\n"
-	"		M-2.5 -9v4\"/>\n"},
+    "		M-2.5 -9v4\"/>\n", 0, 0},
 #define D_turn 80
 {	"<path id=\"turn\" class=\"fill\" d=\"\n"
 	"	m5.2 -8\n"
@@ -579,43 +579,43 @@ static struct {
 	"	l4.8 3.5\n"
 	"	c3 2 5.8 -1.8 3.6 -4.4\n"
 	"	-1 -1.1 -2 -0.8 -2.1 0.1\n"
-	"	-0.1 0.9 0.7 1.2 1.9 0.6\"/>\n"},
+    "	-0.1 0.9 0.7 1.2 1.9 0.6\"/>\n", 0, 0},
 #define D_turnx 81
 {	"<g id=\"turnx\">\n"
 	"	<use xlink:href=\"#turn\"/>\n"
 	"	<path d=\"M0 -1.5v-9\" class=\"stroke\"/>\n"
-	"</g>\n", D_turn},
+    "</g>\n", D_turn, 0},
 #define D_wedge 82
-{	"<path id=\"wedge\" class=\"fill\" d=\"M0 -1l-1.5 -5h3l-1.5 5\"/>\n"},
+{	"<path id=\"wedge\" class=\"fill\" d=\"M0 -1l-1.5 -5h3l-1.5 5\"/>\n", 0, 0},
 #define D_ltr 83
 {	"<path id=\"ltr\" class=\"fill\"\n"
 	"    d=\"m0 -0.4c2 -1.5 3.4 -1.9 3.9 0.4\n"
 	"	c0.2 0.8 0.7 0.7 2.1 -0.4\n"
 	"	v0.8c-2 1.5 -3.4 1.9 -3.9 -0.4\n"
-	"	c-0.2 -0.8 -0.7 -0.7 -2.1 0.4z\"/>\n"},
+    "	c-0.2 -0.8 -0.7 -0.7 -2.1 0.4z\"/>\n", 0, 0},
 #define D_custos 84
 {	"<g id=\"custos\">\n"
 	"	<path d=\"M-4 0l2 2.5l2 -2.5l2 2.5l2 -2.5\n"
 	"		l-2 -2.5l-2 2.5l-2 -2.5l-2 2.5\" class=\"fill\"/>\n"
 	"	<path d=\"M3.5 0l5 -7\" class=\"stroke\"/>\n"
-	"</g>\n"},
+    "</g>\n", 0, 0},
 #define D_showerror 85
-{	"<circle id=\"showerror\" r=\"30\" stroke=\"#ffc0c0\" stroke-width=\"2.5\" fill=\"none\"/>\n"},
+{	"<circle id=\"showerror\" r=\"30\" stroke=\"#ffc0c0\" stroke-width=\"2.5\" fill=\"none\"/>\n", 0, 0},
 #define D_sfz 86
 {	"<text id=\"sfz\" style=\"font:italic 14px serif\"\n"
 	"	x=\"-5\" y=\"-7\">s<tspan\n"
-	"	font-size=\"16\" font-weight=\"bold\">f</tspan>z</text>\n"},
+    "	font-size=\"16\" font-weight=\"bold\">f</tspan>z</text>\n", 0, 0},
 #define D_trl 87
 {	"<text id=\"trl\" style=\"font:italic bold 16px serif\"\n"
-	"	x=\"-2\" y=\"-4\">tr</text>\n"},
+    "	x=\"-2\" y=\"-4\">tr</text>\n", 0, 0},
 #define D_marcato 88
-{	"<path id=\"marcato\" d=\"m-3 0l3 -7l3 7l-1.5 0l-1.8 -4.2l-1.7 4.2\"/>\n"},
+{	"<path id=\"marcato\" d=\"m-3 0l3 -7l3 7l-1.5 0l-1.8 -4.2l-1.7 4.2\"/>\n", 0, 0},
 #define D_ped 89
 {	"<text id=\"ped\" font-family=\"serif\" font-size=\"16\" font-style=\"italic\"\n"
-	"	x=\"-10\" y=\"-4\">Ped</text>\n"},
+    "	x=\"-10\" y=\"-4\">Ped</text>\n", 0, 0},
 #define D_pedoff 90
 {	"<text id=\"pedoff\" font-family=\"serif\" font-size=\"16\" font-style=\"italic\"\n"
-	"	x=\"-5\" y=\"-4\">*</text>\n"},
+    "	x=\"-5\" y=\"-4\">*</text>\n", 0, 0},
 };
 
 static struct {

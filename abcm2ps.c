@@ -596,7 +596,7 @@ static void reset_globals()
 	for (int i = 0; i < MAXTBLT; i++) {
 		//free(tblts[i]);
 	}
-	memset(tblts, 0, MAXTBLT * sizeof (struct tblt_s));
+    memset(tblts, 0, MAXTBLT * sizeof (struct tblt_s*));
 
 	s_argv = NULL;
 	s_argc = 0;
