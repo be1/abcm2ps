@@ -3,7 +3,8 @@ TEMPLATE = lib
 TARGET = abcm2ps
 CONFIG -= qt
 CONFIG += link_pkgconfig debug staticlib
-QMAKE_CFLAGS += -DHAVE_PANGO=1 -O2 -g -Dlinux -D_FORTIFY_SOURCE=2
+DEFINES += HAVE_PANGO=1 linux _FORTIFY_SOURCE=2
+QMAKE_CFLAGS += -g
 PKGCONFIG += pangocairo pangoft2
 SOURCES += abcm2ps.c \
 		abcparse.c \

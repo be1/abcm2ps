@@ -24,12 +24,12 @@
 
 #include "abcm2ps.h"
 
-static unsigned char *dst;
+static unsigned char *dst = NULL;
 static int offset, size;
 static unsigned char *selection;
 static int latin, skip;
-static char prefix[4] = {'%'};
-static int state;
+static char prefix[4] = { '%', 0, 0, 0 };
+static int state = 0;
 
 /*
  * translation table from the ABC draft version 2
@@ -70,27 +70,27 @@ static unsigned char ligature[] = "AAÅaaåAEÆaeæccçcCÇDHÐdhðngŋOEŒssßT
 
 /* latin conversion tables - range 0xa0 .. 0xff */
 static unsigned char latin2[] = {
-	" Ą˘Ł¤ĽŚ§¨ŠŞŤŹ­ŽŻ°ą˛ł´ľśˇ¸šşťź˝žż"
+	" Ą˘Ł¤ĽŚ§¨ŠŞŤŹ­ŽŻ°ą˛ł´ľśˇ¸šşťź˝žż"
 	"ŔÁÂĂÄĹĆÇČÉĘËĚÍÎĎĐŃŇÓÔŐÖ×ŘŮÚŰÜÝŢß"
 	"ŕáâăäĺćçčéęëěíîďđńňóôőö÷řůúűüýţ˙"
 };
 static unsigned char latin3[] = {
-	" Ħ˘£¤  Ĥ§¨İŞĞĴ­  Ż°ħ²³´µĥ·¸ışğĵ½  ż"
+	" Ħ˘£¤  Ĥ§¨İŞĞĴ­  Ż°ħ²³´µĥ·¸ışğĵ½  ż"
 	"ÀÁÂ  ÄĊĈÇÈÉÊËÌÍÎÏ  ÑÒÓÔĠÖ×ĜÙÚÛÜŬŜß"
 	"àáâ  äċĉçèéêëìíîï  ñòóôġö÷ĝùúûüŭŝ˙"
 };
 static unsigned char latin4[] = {
-	" ĄĸŖ¤ĨĻ§¨ŠĒĢŦ­Ž¯°ą˛ŗ´ĩļˇ¸šēģŧŊžŋ"
+	" ĄĸŖ¤ĨĻ§¨ŠĒĢŦ­Ž¯°ą˛ŗ´ĩļˇ¸šēģŧŊžŋ"
 	"ĀÁÂÃÄÅÆĮČÉĘËĖÍÎĪĐŅŌĶÔÕÖ×ØŲÚÛÜŨŪß"
 	"āáâãäåæįčéęëėíîīđņōķôõö÷øųúûüũū˙"
 };
 static unsigned char latin5[] = {
-	" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿"
+	" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿"
 	"ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß"
 	"àáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ"
 };
 static unsigned char latin6[] = {
-	" ĄĒĢĪĨĶ§ĻĐŠŦŽ­ŪŊ°ąēģīĩķ·ļđšŧž―ūŋ"
+	" ĄĒĢĪĨĶ§ĻĐŠŦŽ­ŪŊ°ąēģīĩķ·ļđšŧž―ūŋ"
 	"ĀÁÂÃÄÅÆĮČÉĘËĖÍÎÏÐŅŌÓÔÕÖŨØŲÚÛÜÝÞß"
 	"āáâãäåæįčéęëėíîïðņōóôõöũøųúûüýþĸ"
 };
@@ -504,10 +504,19 @@ void frontend(unsigned char *s,
 	char prefix_sav[4];
 	int latin_sav = 0;		/* have C compiler happy */
 
+    memset(prefix_sav, 0, sizeof prefix_sav);
+
+    memset(prefix, 0, sizeof prefix);
+    prefix[0] = '%';
+
+    free(dst);
+    dst = NULL;
+
 	begin_end = NULL;
 	end_len = 0;
 	histo = 0;
-//	state = 0;
+    state = 0;
+    offset = size = 0;
 
 	if (ftype == FE_ABC
 	 && strncmp((char *) s, "%abc-", 5) == 0) {
@@ -636,7 +645,8 @@ void frontend(unsigned char *s,
 				/* fall thru */
 			case 2:
 				state = 0;
-				strcpy(prefix, prefix_sav);
+                strncpy(prefix, prefix_sav, sizeof prefix - 1);
+                prefix[sizeof prefix -1] = 0;
 				latin = latin_sav;
 				break;
 			}
@@ -873,7 +883,8 @@ info:
 						goto ignore;
 				}
 				state = 1;
-				strcpy(prefix_sav, prefix);
+                strncpy(prefix_sav, prefix, sizeof prefix_sav - 1);
+                prefix_sav[sizeof prefix_sav - 1] = 0;
 				latin_sav = latin;
 				break;
 			case 'U':
