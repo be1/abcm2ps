@@ -21,7 +21,7 @@ SOURCES += abcm2ps.c \
 		syms.c
 HEADERS += abcm2ps.h
 AVERSION = 8.14.9~qabc
-VDATE = 2020-11-20
+VDATE = 2020-12-04
 DEFAULT_FDIR = $$ABCM2PSDIR
 config.input = config.h.in
 config.output = config.h
