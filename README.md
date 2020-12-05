@@ -1,16 +1,14 @@
 # abcm2ps
 
-[![Build Status](https://travis-ci.org/leesavide/abcm2ps.svg?branch=master)](https://travis-ci.org/leesavide/abcm2ps)
-
 ### Overview
 
 abcm2ps is a C program which converts music tunes from the ABC music notation
 to PostScript or SVG.
 
 This **lib** branch is a fork that aims to:
-- be compatible with [https://github.com/be1/qabc/tree/svg] that depends on it.
-- workaround some SVG bad renderers
-- create a library version (phase two)
+- be compatible with [QAbc](https://github.com/be1/qabc/tree/svg) that depends on it.
+- workaround some SVG bad renderers such as QSvgRenderer.
+- create a thread-safe library version (phase two, in low progress)
 
 Based on [abc2ps](https://github.com/methf/abc2ps),
 the Postscript generator for ABC music notation by Michael Methfessel,
