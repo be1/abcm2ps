@@ -582,9 +582,6 @@ static void release_globals()
 		if (str_c[i])
 			freearena(str_c[i]);
 		str_c[i] = NULL;
-		if (str_r[i])
-			freearena(str_r[i]);
-		str_r[i] = NULL;
 	}
 
 	for (int i = 0; i < MAXTBLT; i++) {
@@ -1195,18 +1192,16 @@ void *getarena(int len)
 	return p;
 }
 
-void freearena(void *arena)
+void freearena(struct str_a* arena)
 {
-	struct str_a *a_p, *a_n;
+	struct str_a *a_n;
 
-	a_p = arena;
-	while (a_p->n) {
-		a_n = a_p->n;
-		//free(a_p->p);
-		a_p->p = NULL;
-		a_p->n = NULL;
-		//free(a_p);
-		a_p = a_n;
+	while (arena->n) {
+		a_n = arena->n;
+		free(arena->p);
+		arena->p = NULL;
+		arena->n = NULL;
+		free(arena);
+		arena = a_n;
 	}
-	//free(arena);
 }
