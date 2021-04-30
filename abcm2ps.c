@@ -576,14 +576,27 @@ static void set_opt(char *w, char *v)
 			"cmd_line", 0);
 }
 
-static void reset_globals()
+static void release_globals()
+{
+	for (int i = 0; i < MAXAREAL; i++) {
+		if (str_c[i])
+			freearena(str_c[i]);
+		str_c[i] = NULL;
+		if (str_r[i])
+			freearena(str_r[i]);
+		str_r[i] = NULL;
+	}
+
+	for (int i = 0; i < MAXTBLT; i++) {
+		free(tblts[i]);
+		tblts[i] = NULL;
+	}
+}
+
+static void init_globals()
 {
 	nepsf = 0;
 	in_fname = NULL;
-	for (int i = 0; i < MAXAREAL; i++) {
-		//free(str_c[i]);
-		//free(str_r[i]);
-	}
 	memset(str_c, 0, MAXAREAL * sizeof (struct str_a*));
 	memset(str_r, 0, MAXAREAL * sizeof (struct str_a*));
 
@@ -593,10 +606,7 @@ static void reset_globals()
 	ncmdtblt = 0;
 	memset(cmdtblts, 0, MAXCMDTBLT * sizeof (struct cmdtblt_s));
 
-	for (int i = 0; i < MAXTBLT; i++) {
-		//free(tblts[i]);
-	}
-    memset(tblts, 0, MAXTBLT * sizeof (struct tblt_s*));
+	memset(tblts, 0, MAXTBLT * sizeof (struct tblt_s*));
 
 	s_argv = NULL;
 	s_argc = 0;
@@ -606,10 +616,8 @@ static void reset_globals()
 	pagenum_nr = 1;
 	tunenum = 0;
 
-	if (cfmt.header) {
-        free(cfmt.header);
-		cfmt.header = NULL;
-	}
+	free(cfmt.header);
+	cfmt.header = NULL;
 }
 
 void abcminit()
@@ -631,7 +639,7 @@ int abcm2ps(int argc, char **argv)
 	outfn[0] = '\0';
 	init_outbuf(64);
 
-	reset_globals();
+	init_globals();
 
 	/* set the global flags */
 	s_argc = argc;
@@ -1119,6 +1127,7 @@ int abcm2ps(int argc, char **argv)
 	}
 	close_output_file();
 	setlocale(LC_NUMERIC, "");
+	release_globals();
 	return severity == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
@@ -1127,6 +1136,8 @@ void clrarena(int level)
 {
 	struct str_a *a_p;
 
+	free(str_r[level]);
+	str_r[level] = NULL;
 	if ((a_p = str_r[level]) == NULL) {
 		str_r[level] = a_p = malloc(sizeof *str_r[0] + AREANASZ - 2);
 		a_p->sz = AREANASZ;
@@ -1186,5 +1197,16 @@ void *getarena(int len)
 
 void freearena(void *arena)
 {
-	free(arena); /* FIXME: must be buggy */
+	struct str_a *a_p, *a_n;
+
+	a_p = arena;
+	while (a_p->n) {
+		a_n = a_p->n;
+		//free(a_p->p);
+		a_p->p = NULL;
+		a_p->n = NULL;
+		//free(a_p);
+		a_p = a_n;
+	}
+	//free(arena);
 }
