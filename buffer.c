@@ -779,6 +779,12 @@ int bskip(float h)
 /* -- initialize the output buffer -- */
 int init_outbuf(int kbsz)
 {
+	memset(ln_buf, 0, BUFFLN);
+	memset(ln_font, 0, BUFFLN);
+	memset(ln_lmarg, 0, BUFFLN);
+	memset(ln_pos, 0, BUFFLN);
+	memset(ln_scale, 0, BUFFLN);
+
 	if (outbuf)
 		free(outbuf);
 	outbufsz = kbsz * 1024;

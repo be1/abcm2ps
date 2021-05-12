@@ -515,8 +515,8 @@ static void wherefmtdir(void)
 		return;
 	p++;
 	if (p > &exe[5] && strncmp(p - 5, "/bin", 4) == 0) {
-		strcpy(p - 4, "share/abcm2ps/");
-		p += -4 + 14;
+		strcpy(p - 4, "share/qabc/abcm2ps/");
+		p += -4 + 19;
 	}
 	/* else, assume this is the source directory */
 
@@ -592,8 +592,11 @@ static void release_globals()
 
 static void init_globals()
 {
+	epsf = 0;
 	nepsf = 0;
+	svg = 0;
 	in_fname = NULL;
+	memset(outfn, 0, FILENAME_MAX);
 	memset(str_c, 0, MAXAREAL * sizeof (struct str_a*));
 	memset(str_r, 0, MAXAREAL * sizeof (struct str_a*));
 
@@ -614,7 +617,7 @@ static void init_globals()
 	tunenum = 0;
 
 	free(cfmt.header);
-	cfmt.header = NULL;
+	memset(&cfmt, 0, sizeof cfmt);
 }
 
 void abcminit()
@@ -739,7 +742,7 @@ int abcm2ps(int argc, char **argv)
 	clrarena(0);				/* global */
 	clrarena(1);				/* tunes */
 	clrarena(2);				/* generation */
-//	memset(&info, 0, sizeof info);
+	memset(&info, 0, sizeof info);
 	info['T' - 'A'] = &notitle;
 	notitle.text = "T:";
 	set_format();
