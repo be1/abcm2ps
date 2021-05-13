@@ -5,7 +5,6 @@ CONFIG -= qt
 CONFIG += link_pkgconfig debug staticlib
 DEFINES += linux _FORTIFY_SOURCE=2
 QMAKE_CFLAGS += -O2
-#PKGCONFIG += pangocairo pangoft2
 SOURCES += abcm2ps.c \
 		abcparse.c \
 		buffer.c \
