@@ -594,7 +594,7 @@ extern int epsf;		/* 1: EPSF, 2: SVG, 3: embedded ABC */
 extern int svg;			/* 1: SVG, 2: XHTML */
 extern int showerror;		/* show the errors */
 extern int pipeformat;		/* format for bagpipes */
-
+extern char outfnam[FILENAME_MAX];
 extern char outfn[FILENAME_MAX]; /* output file name */
 extern char *in_fname;		/* current input file name */
 extern time_t mtime;		/* last modification time of the input file */

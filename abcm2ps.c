@@ -596,6 +596,9 @@ static void init_globals()
 	nepsf = 0;
 	svg = 0;
 	in_fname = NULL;
+	file_initialized = 0;
+	memset(outfnam, 0, sizeof FILENAME_MAX);
+	memset(tex_buf, 0, TEX_BUF_SZ);
 	memset(outfn, 0, FILENAME_MAX);
 	memset(str_c, 0, MAXAREAL * sizeof (struct str_a*));
 	memset(str_r, 0, MAXAREAL * sizeof (struct str_a*));

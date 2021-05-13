@@ -37,7 +37,7 @@ static float bposy;		/* current position in buffered data */
 extern int nepsf;		/* counter for -E/-g output files */
 static int nbpages;		/* number of pages in the output file */
 	int outbufsz;		/* size of outbuf */
-static char outfnam[FILENAME_MAX]; /* internal file name for open/close */
+char outfnam[FILENAME_MAX]; /* internal file name for open/close */
 static struct FORMAT *p_fmt;	/* current format while treating a new page */
 
 int (*output)(FILE *out, const char *fmt, ...);
