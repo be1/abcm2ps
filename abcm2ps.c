@@ -578,6 +578,8 @@ static void set_opt(char *w, char *v)
 
 static void release_globals()
 {
+	free(selection);
+	selection = NULL;
 	for (int i = 0; i < MAXAREAL; i++) {
 		if (str_c[i])
 			freearena(str_c[i]);
@@ -597,6 +599,7 @@ static void init_globals()
 	svg = 0;
 	in_fname = NULL;
 	file_initialized = 0;
+	selection = NULL;
 	memset(outfnam, 0, sizeof FILENAME_MAX);
 	memset(tex_buf, 0, TEX_BUF_SZ);
 	memset(outfn, 0, FILENAME_MAX);

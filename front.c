@@ -26,7 +26,7 @@
 
 static unsigned char *dst = NULL;
 static int offset, size;
-static unsigned char *selection;
+unsigned char *selection;
 static int latin, skip;
 static char prefix[4] = { '%', 0, 0, 0 };
 static int state = 0;

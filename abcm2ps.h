@@ -896,6 +896,7 @@ void put_str(char *str, int action);
 float tex_str(char *s);
 extern char tex_buf[];	/* result of tex_str() */
 #define TEX_BUF_SZ 512
+extern unsigned char* selection; /* tune selection */
 char *trim_title(char *p, struct SYMBOL *title);
 void user_ps_add(char *s, char use);
 void user_ps_write(void);
